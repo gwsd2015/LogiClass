@@ -16,13 +16,13 @@
 /**
 * @see uninstall_plugin()
 *
-* @package mod_newmodule
+* @package mod_testStuff
 * @copyright 2011 Your Name <your@email.adress>
 * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 /**
 * Custom uninstallation procedure
 */
-function xmldb_newmodule_uninstall() {
+function xmldb_testStuff_uninstall() {
 return true;
 }

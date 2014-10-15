@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 /**
-* Defines the version of newmodule
+* Defines the version of testStuff
 *
 * This code fragment is called by moodle_needs_upgrading() and
 * /admin/index.php
 *
-* @package mod_newmodule
+* @package mod_testStuff
 * @copyright 2011 Your Name
 * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
@@ -28,4 +28,4 @@ $module->version = 0; // If version == 0 then module will not be installed
 //$module->version = 2010032200; // The current module version (Date: YYYYMMDDXX)
 $module->requires = 2010031900; // Requires this Moodle version
 $module->cron = 0; // Period for cron to check this module (secs)
-$module->component = 'mod_newmodule'; // To check on upgrade, that module sits in correct place
+$module->component = 'mod_testStuff'; // To check on upgrade, that module sits in correct place
