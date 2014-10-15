@@ -14,24 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 /**
-* This file replaces the legacy STATEMENTS section in db/install.xml,
-* lib.php/modulename_install() post installation hook and partially defaults.php
+* Internal library of functions for module widget
 *
-* @package mod_testStuff
-* @copyright 2011 Your Name <your@email.adress>
+* All the widget specific functions, needed to implement the module
+* logic, should go here. Never include this file from your lib.php!
+*
+* @package mod_widget
+* @copyright 2011 Your Name
 * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
+defined('MOODLE_INTERNAL') || die();
 /**
-* Post installation procedure
+* Does something really useful with the passed things
 *
-* @see upgrade_plugins_modules()
+* @param array $things
+* @return object
 */
-function xmldb_testStuff_install() {
-}
-/**
-* Post installation recovery procedure
-*
-* @see upgrade_plugins_modules()
-*/
-function xmldb_testStuff_install_recovery() {
-}
+//function widget_do_something_useful(array $things) {
+// return new stdClass();
+//}

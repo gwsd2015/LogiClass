@@ -14,22 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 /**
-* English strings for testStuff
+* English strings for widget
 *
 * You can have a rather longer description of the file as well,
 * if you like, and it can span multiple lines.
 *
-* @package mod_testStuff
+* @package mod_widget
 * @copyright 2011 Your Name
 * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 defined('MOODLE_INTERNAL') || die();
-$string['modulename'] = 'testStuff';
-$string['modulenameplural'] = 'testStuffs';
-$string['modulename_help'] = 'Use the testStuff module for... | The testStuff module allows...';
-$string['testStufffieldset'] = 'Custom example fieldset';
-$string['testStuffname'] = 'testStuff name';
-$string['testStuffname_help'] = 'This is the content of the help tooltip associated with the testStuffname field. Markdown syntax is supported.';
-$string['testStuff'] = 'testStuff';
-$string['pluginadministration'] = 'testStuff administration';
-$string['pluginname'] = 'testStuff';
+$string['modulename'] = 'widget';
+$string['modulenameplural'] = 'widgets';
+$string['modulename_help'] = 'Use the widget module for... | The widget module allows...';
+$string['widgetfieldset'] = 'Custom example fieldset';
+$string['widgetname'] = 'widget name';
+$string['widgetname_help'] = 'This is the content of the help tooltip associated with the widgetname field. Markdown syntax is supported.';
+$string['widget'] = 'widget';
+$string['pluginadministration'] = 'widget administration';
+$string['pluginname'] = 'widget';

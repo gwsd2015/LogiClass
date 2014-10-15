@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 /**
-* Capability definitions for the testStuff module
+* Capability definitions for the widget module
 *
 * The capabilities are loaded into the database table when the module is
 * installed or updated. Whenever the capability definitions are updated,
@@ -38,14 +38,14 @@
 *
 * The variable name for the capability definitions array is $capabilities
 *
-* @package mod_testStuff
+* @package mod_widget
 * @copyright 2011 Your Name
 * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 defined('MOODLE_INTERNAL') || die();
 $capabilities = array(
 /***************************** remove these comment marks and modify the code as needed
-'mod/testStuff:addinstance' => array(
+'mod/widget:addinstance' => array(
 'riskbitmask' => RISK_XSS,
 'captype' => 'write',
 'contextlevel' => CONTEXT_COURSE,
@@ -55,7 +55,7 @@ $capabilities = array(
 ),
 'clonepermissionsfrom' => 'moodle/course:manageactivities'
 ),
-'mod/testStuff:view' => array(
+'mod/widget:view' => array(
 'captype' => 'read',
 'contextlevel' => CONTEXT_MODULE,
 'legacy' => array(
@@ -66,7 +66,7 @@ $capabilities = array(
 'admin' => CAP_ALLOW
 )
 ),
-'mod/testStuff:submit' => array(
+'mod/widget:submit' => array(
 'riskbitmask' => RISK_SPAM,
 'captype' => 'write',
 'contextlevel' => CONTEXT_MODULE,

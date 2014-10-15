@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 /**
-* The main testStuff configuration form
+* The main widget configuration form
 *
 * It uses the standard core Moodle formslib. For more info about them, please
 * visit: http://docs.moodle.org/en/Development:lib/formslib.php
 *
-* @package mod_testStuff
+* @package mod_widget
 * @copyright 2011 Your Name
 * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
@@ -28,7 +28,7 @@ require_once($CFG->dirroot.'/course/moodleform_mod.php');
 /**
 * Module instance settings form
 */
-class mod_testStuff_mod_form extends moodleform_mod {
+class mod_widget_mod_form extends moodleform_mod {
 /**
 * Defines forms elements
 */
@@ -38,7 +38,7 @@ $mform = $this->_form;
 // Adding the "general" fieldset, where all the common settings are showed
 $mform->addElement('header', 'general', get_string('general', 'form'));
 // Adding the standard "name" field
-$mform->addElement('text', 'name', get_string('testStuffname', 'testStuff'), array('size'=>'64'));
+$mform->addElement('text', 'name', get_string('widgetname', 'widget'), array('size'=>'64'));
 if (!empty($CFG->formatstringstriptags)) {
 $mform->setType('name', PARAM_TEXT);
 } else {
@@ -46,15 +46,15 @@ $mform->setType('name', PARAM_CLEAN);
 }
 $mform->addRule('name', null, 'required', null, 'client');
 $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-$mform->addHelpButton('name', 'testStuffname', 'testStuff');
+$mform->addHelpButton('name', 'widgetname', 'widget');
 // Adding the standard "intro" and "introformat" fields
 $this->add_intro_editor();
 //-------------------------------------------------------------------------------
-// Adding the rest of testStuff settings, spreeading all them into this fieldset
+// Adding the rest of widget settings, spreeading all them into this fieldset
 // or adding more fieldsets ('header' elements) if needed for better logic
-$mform->addElement('static', 'label1', 'testStuffsetting1', 'Your testStuff fields go here. Replace me!');
-$mform->addElement('header', 'testStufffieldset', get_string('testStufffieldset', 'testStuff'));
-$mform->addElement('static', 'label2', 'testStuffsetting2', 'Your testStuff fields go here. Replace me!');
+$mform->addElement('static', 'label1', 'widgetsetting1', 'Your widget fields go here. Replace me!');
+$mform->addElement('header', 'widgetfieldset', get_string('widgetfieldset', 'widget'));
+$mform->addElement('static', 'label2', 'widgetsetting2', 'Your widget fields go here. Replace me!');
 //-------------------------------------------------------------------------------
 // add standard elements, common to all modules
 $this->standard_coursemodule_elements();

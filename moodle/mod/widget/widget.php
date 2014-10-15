@@ -14,16 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 /**
-* Redirect the user to the appropriate submission related page
+* English strings for widget
 *
-* @package mod_testStuff
-* @category grade
+* You can have a rather longer description of the file as well,
+* if you like, and it can span multiple lines.
+*
+* @package mod_widget
 * @copyright 2011 Your Name
 * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
-require_once(__DIR__ . "../../config.php");
-$id = required_param('id', PARAM_INT); // Course module ID
-$itemnumber = optional_param('itemnumber', 0, PARAM_INT); // Item number, may be != 0 for activities that allow more than one grade per user
-$userid = optional_param('userid', 0, PARAM_INT); // Graded user ID (optional)
-//in the simplest case just redirect to the view page
-redirect('view.php?id='.$id);
+defined('MOODLE_INTERNAL') || die();
+$string['modulename'] = 'widget';
+$string['modulenameplural'] = 'widgets';
+$string['modulename_help'] = 'Use the widget module for... | The widget module allows...';
+$string['widgetfieldset'] = 'Custom example fieldset';
+$string['widgetname'] = 'widget name';
+$string['widgetname_help'] = 'This is the content of the help tooltip associated with the widgetname field. Markdown syntax is supported.';
+$string['widget'] = 'widget';
+$string['pluginadministration'] = 'widget administration';
+$string['pluginname'] = 'widget';

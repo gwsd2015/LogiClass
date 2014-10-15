@@ -14,18 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 /**
-* Defines the version of testStuff
+* Definition of log events
 *
-* This code fragment is called by moodle_needs_upgrading() and
-* /admin/index.php
+* NOTE: this is an example how to insert log event during installation/update.
+* It is not really essential to know about it, but these logs were created as example
+* in the previous 1.9 TESTSTUFF.
 *
-* @package mod_testStuff
-* @copyright 2011 Your Name
+* @package mod_widget
+* @copyright 2011 Your Name <your@email.adress>
 * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 defined('MOODLE_INTERNAL') || die();
-$module->version = 0; // If version == 0 then module will not be installed
-//$module->version = 2010032200; // The current module version (Date: YYYYMMDDXX)
-$module->requires = 2010031900; // Requires this Moodle version
-$module->cron = 0; // Period for cron to check this module (secs)
-$module->component = 'mod_testStuff'; // To check on upgrade, that module sits in correct place
+global $DB;
+$logs = array(
+array('module'=>'widget', 'action'=>'add', 'mtable'=>'widget', 'field'=>'name'),
+array('module'=>'widget', 'action'=>'update', 'mtable'=>'widget', 'field'=>'name'),
+array('module'=>'widget', 'action'=>'view', 'mtable'=>'widget', 'field'=>'name'),
+array('module'=>'widget', 'action'=>'view all', 'mtable'=>'widget', 'field'=>'name')
+);

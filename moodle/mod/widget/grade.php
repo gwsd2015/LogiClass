@@ -14,21 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 /**
-* Definition of log events
+* Redirect the user to the appropriate submission related page
 *
-* NOTE: this is an example how to insert log event during installation/update.
-* It is not really essential to know about it, but these logs were created as example
-* in the previous 1.9 TESTSTUFF.
-*
-* @package mod_testStuff
-* @copyright 2011 Your Name <your@email.adress>
+* @package mod_widget
+* @category grade
+* @copyright 2011 Your Name
 * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
-defined('MOODLE_INTERNAL') || die();
-global $DB;
-$logs = array(
-array('module'=>'testStuff', 'action'=>'add', 'mtable'=>'testStuff', 'field'=>'name'),
-array('module'=>'testStuff', 'action'=>'update', 'mtable'=>'testStuff', 'field'=>'name'),
-array('module'=>'testStuff', 'action'=>'view', 'mtable'=>'testStuff', 'field'=>'name'),
-array('module'=>'testStuff', 'action'=>'view all', 'mtable'=>'testStuff', 'field'=>'name')
-);
+require_once(__DIR__ . "../../config.php");
+$id = required_param('id', PARAM_INT); // Course module ID
+$itemnumber = optional_param('itemnumber', 0, PARAM_INT); // Item number, may be != 0 for activities that allow more than one grade per user
+$userid = optional_param('userid', 0, PARAM_INT); // Graded user ID (optional)
+//in the simplest case just redirect to the view page
+redirect('view.php?id='.$id);
