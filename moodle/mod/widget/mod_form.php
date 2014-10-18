@@ -52,9 +52,10 @@ $this->add_intro_editor();
 //-------------------------------------------------------------------------------
 // Adding the rest of widget settings, spreeading all them into this fieldset
 // or adding more fieldsets ('header' elements) if needed for better logic
-$mform->addElement('static', 'label1', 'widgetsetting1', 'Your widget fields go here. Replace me!');
-$mform->addElement('header', 'widgetfieldset', get_string('widgetfieldset', 'widget'));
-$mform->addElement('static', 'label2', 'widgetsetting2', 'Your widget fields go here. Replace me!');
+$mform->addElement('static', 'label1', 'categories', 'I do not know what I am doing');
+$mform->addElement('text','name','trythis','size="20"');
+$mform->addElement('header', 'newmodulefieldset', get_string('newmodulefieldset', 'newmodule'));
+$mform->addElement('static', 'label2', 'options', 'I still have no idea what I am doing');
 //-------------------------------------------------------------------------------
 // add standard elements, common to all modules
 $this->standard_coursemodule_elements();

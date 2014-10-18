@@ -31,5 +31,6 @@ defined('MOODLE_INTERNAL') || die();
 * @return object
 */
 //function widget_do_something_useful(array $things) {
-// return new stdClass();
+//	 print_string('welcomemessage','newmodule');
+//	 return new stdClass();
 //}

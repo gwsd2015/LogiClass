@@ -1,0 +1,33 @@
+
+/* This method initializes the puzzle grid
+ * @param c = number of categories
+ * @param v = number of values in each category
+*/ 
+function initGrid(c, v){
+    //STUPID IMPLEMENTATION: CREATE 2D CxV ARRAY
+    //TO DO: MAKE TRIANGULAR MATRIX
+    var A = [];
+    for(i=0; i<c; i++){
+	A[i] = [];
+	for(j=0; j<v; j++){
+	    A[i][j] = false;
+	}
+    }
+    return A;
+}
+
+function main(){
+    document.write("hello</br>");
+    A = initGrid(3,3);
+    document.write("[");
+    for(i=0; i<A.length; i++){
+	document.write("[");
+	for(j=0; j<A[i].length; j++){
+	    document.write(A[i][j] + ",");
+	}
+	document.write("],");
+    }
+    document.write("]");
+}
+
+main();

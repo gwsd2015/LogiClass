@@ -33,3 +33,4 @@ $string['widgetname_help'] = 'This is the content of the help tooltip associated
 $string['widget'] = 'widget';
 $string['pluginadministration'] = 'widget administration';
 $string['pluginname'] = 'widget';
+$string['welcomemessage'] = 'hello world';

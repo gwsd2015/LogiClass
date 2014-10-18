@@ -58,5 +58,6 @@ echo $OUTPUT->box(format_module_intro('widget', $widget, $cm->id), 'generalbox m
 }
 // Replace the following lines with you own code
 echo $OUTPUT->heading('Yay! It works!');
+echo $OUTPUT->heading('Does this work?');
 // Finish the page
 echo $OUTPUT->footer();
