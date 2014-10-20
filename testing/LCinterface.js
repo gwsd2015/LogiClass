@@ -4,15 +4,21 @@
  * @param v = number of values in each category
 */ 
 function initGrid(c, v){
+    //check that c & v are integers
+    if((typeof c !== 'number') || (typeof v !== 'number')){
+	document.write("INVALID ARGUMENT TYPES: initGrid requires two integers");
+	return; //return undefined value
+    }
     //STUPID IMPLEMENTATION: CREATE 2D CxV ARRAY
     //TO DO: MAKE TRIANGULAR MATRIX
     var A = [];
-    for(i=0; i<c; i++){
-	A[i] = [];
-	for(j=0; j<v; j++){
-	    A[i][j] = false;
+    
+    for(i=0; i<(c-1); i++){
+	for(j=0; j<o; j++){
+	    
 	}
     }
+
     return A;
 }
 
