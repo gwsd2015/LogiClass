@@ -7,14 +7,13 @@
 function initGrid(numCategories, numOptions){
     
     //check that arguments are not null
-    if(!numCategories || !numOptions){
-	console.log("ERROR NULL ARGUMENT: initGrid");
+    if(areReqdArgsNull(numCategories, numOptions)){
 	return;
     }
 
-    //check that numCategories & numOptions are integers
-    if((typeof numCategories !== 'number') || (typeof numOptions !== 'number')){
-	console.log("INVALID ARGUMENT TYPES for initGrid: numCategories=number, numOptions=number");
+    //check that numCategories & numOptions are numbers
+    if(checkTypes({"arg":numCategories, "expectType":"number"},
+		  {"arg":numOptions, "expectType":"number"})){
 	return; //return undefined value
     }
 
@@ -38,7 +37,14 @@ function initGrid(numCategories, numOptions){
     return A;
 }
 
+/* This method is used to print the grid for debugging
+ * @param A = 2 dimensional array (grid to be printed)
+ */
 function printGrid(A){
+    //check A is not null
+    if(areReqdArgsNull(A)){
+	return;
+    }
     for(i=0; i<A.length; i++){
         for(j=0; j<A[i].length; j++){
             document.write(A[i][j] + "|");
@@ -46,7 +52,6 @@ function printGrid(A){
         document.write("</br>");
     }
 }
-
 
 /*
  * @param name = string
@@ -65,8 +70,7 @@ function printGrid(A){
  */
 function createCategory(name, optionsList, type){
     //check that arguments are not null
-    if(!name, !optionsList, !type){
-	console.log("ERROR NULL ARGUMENT: createCategory");
+    if(areReqdArgsNull(name, optionsList, type)){
 	return;
     }
 
@@ -93,6 +97,10 @@ function createCategory(name, optionsList, type){
  * @param categories = number of categories (integer)
  */
 function initRelationships(categories){
+    //check that argument is not null
+    if(areReqdArgsNull(categories)){
+	return;
+    }
     //type checking 
     if(!(categories instanceof Array)){
 	console.log("INVALID ARGUMENT TYPES for categories=array");
@@ -111,6 +119,10 @@ function initRelationships(categories){
 }
 
 function initPuzzle(name, categories, description){
+    //check arguments are not null
+    if(areReqdArgsNull(name, categories, description)){
+	return;
+    }
     //type checking
     if((typeof name !== "string") && !(categories instanceof Array) && (typeof descripion !== "string")){
 	console.log("INVALID ARGUMENT TYPES for initPuzzle: name=string, categories=array, description=string");
@@ -126,13 +138,4 @@ function initPuzzle(name, categories, description){
     };
     return puzzle;
 }
-
-function main(){
-    document.write("hello</br>");
-    A = initGrid(3,8);
-    printGrid(A);
-    document.write(A instanceof Array);
-}
-
-main();
 

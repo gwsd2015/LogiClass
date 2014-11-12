@@ -1,0 +1,26 @@
+/*
+ * method to tell whether a variable is a valid LogiClass 'type'
+ */
+function isValidType(type){
+    var numericalTypes = ["sequence", "day", "month", "year", "date", "other"];
+    var stringTypes = ["noun", "verb", "adjective"];
+    var i;
+    var j;
+
+    //check that 'type' has type 'string'
+    if(typeof type !== "string"){
+	return false;
+    }
+
+    for(i=0; i<numericalTypes.length; i++){
+	if(numericalTypes[i] === type){
+	    return true;
+	}
+    }
+    for(j=0; j<stringTypes.length; j++){
+	if(stringTypes[j] === type){
+	    return true;
+	}
+    }
+    return false;
+}
