@@ -71,7 +71,7 @@ function checkTypes(){
 	    arg = arguments[i].arg;
 	    expectType = arguments[i].expectType;
 
-	    if(typeof arg !== expectType){
+	    if((typeof arg !== expectType) (arg instanceof expectType)){
 		errorMsg = errorMsg + " argument #" + i + " should be " + 
 		    expectType;
 		ret = true;

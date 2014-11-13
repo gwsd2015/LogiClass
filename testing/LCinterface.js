@@ -75,8 +75,9 @@ function createCategory(name, optionsList, type){
     }
 
     //check argument types
-    if((typeof name !== "string") && !(optionsList instanceof Array) && (typeof type !== "string")){
-	console.log("INVALID ARGUMENT TYPES for createCategory: name=string, optionsList=array");
+    if(checkTypes({"arg":name, "expectType":"string"},
+		  {"arg":optionsList, "expectType":Array},
+		  {"arg":type, "expectType":"string"})){
 	return;
     }
 
@@ -88,6 +89,27 @@ function createCategory(name, optionsList, type){
     return category;
 }
 
+/*
+ * method to get all options from a list of categories
+ * return 2D array
+ * ith entry in the array is the list of options for category i
+ */
+function getAllOptions(categories){
+    var i;
+    var optionList;
+    //check that argument is not null
+    if(areReqdArgsNull(categories)){
+	return;
+    }
+    //type checking
+    if(checkTypes({"args": categories, "expectType":Array})){
+	return;
+    }
+    for(i=0; i<categories.length; i++){
+	optionList = categories[i].options;
+    }
+    return optionList;
+}
 
 /*
  * Creates an object to store relationships
@@ -102,8 +124,7 @@ function initRelationships(categories){
 	return;
     }
     //type checking 
-    if(!(categories instanceof Array)){
-	console.log("INVALID ARGUMENT TYPES for categories=array");
+    if(checkTypes({"args":categories,"expectType":Array})){
         return;
     }
     var numCategories = categories.length;
@@ -112,9 +133,8 @@ function initRelationships(categories){
     var relationship = {
 	"grid": initGrid(numCategories,numOptions),
 	//TODO: IMPLEMENT GETTING OPTIONS FROM CATEGORIES
-	"optionNames": []  //indicies correspond to indicies in grid
+	"optionNames": getAllOptions(categories)  //indicies correspond to indicies in grid
     };
-
     return relationship;
 }
 
@@ -124,9 +144,10 @@ function initPuzzle(name, categories, description){
 	return;
     }
     //type checking
-    if((typeof name !== "string") && !(categories instanceof Array) && (typeof descripion !== "string")){
-	console.log("INVALID ARGUMENT TYPES for initPuzzle: name=string, categories=array, description=string");
-        return;
+    if(checkTypes({"args":name,"expectType":"string"},
+		  {"args":categories,"expectType":Array},
+		  {"args":description,"expectType":"string"})){
+	return;
     }
 
     var puzzle = {
