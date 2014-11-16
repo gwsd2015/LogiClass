@@ -11,7 +11,7 @@ function initGrid(numCategories, numOptions){
 	return;
     }
 
-    //check that numCategories & numOptions are numbers
+    //check that |numCategories| & |numOptions| are numbers
     if(checkTypes({"arg":numCategories, "expectType":"number"},
 		  {"arg":numOptions, "expectType":"number"})){
 	return; //return undefined value
@@ -19,38 +19,23 @@ function initGrid(numCategories, numOptions){
 
     var A = [];
     
-    /* each group of rows is the same length
-     * the first group of rows has (numCategories-1) * numOptions columns
-     * every group of rows that follows has numOptions fewer columns than the previous group
-     * the last group of rows has only numOptions columns
+    /* there are |numCategories| - 1 groups
+     * each group of rows is the same length
+     * the first group of rows has (|numCategories|-1) * |numOptions| columns
+     * every group of rows that follows has |numOptions| fewer columns than the previous group
+     * the last group of rows has only |numOptions| columns
      * every entry is initialized as false
      */
-    for(i=0; i<numCategories; i++){
-	for(j=(i*numOptions); j<((i+1)*numOptions); j++){
-	    A[j] = []
-	    for(k=0; k<((numCategories-(i+1))*numOptions); k++){
-		A[j][k] = false;
+    for(group=0; group<numCategories-1; group++){
+	for(row=(group*numOptions); row<((group+1)*numOptions); row++){
+	    A[row] = [];
+	    for(col=0; col<((numCategories-(group+1))*numOptions); col++){
+		A[row][col] = false;
 	    }
 	}
     }
 
     return A;
-}
-
-/* This method is used to print the grid for debugging
- * @param A = 2 dimensional array (grid to be printed)
- */
-function printGrid(A){
-    //check A is not null
-    if(areReqdArgsNull(A)){
-	return;
-    }
-    for(i=0; i<A.length; i++){
-        for(j=0; j<A[i].length; j++){
-            document.write(A[i][j] + "|");
-        }
-        document.write("</br>");
-    }
 }
 
 /*
@@ -83,7 +68,7 @@ function createCategory(name, optionsList, type){
 
     var category = {
 	"name": name,
-	"options": options,
+	"options": optionsList,
 	"type": type
     };
     return category;
@@ -132,7 +117,6 @@ function initRelationships(categories){
 
     var relationship = {
 	"grid": initGrid(numCategories,numOptions),
-	//TODO: IMPLEMENT GETTING OPTIONS FROM CATEGORIES
 	"optionNames": getAllOptions(categories)  //indicies correspond to indicies in grid
     };
     return relationship;
