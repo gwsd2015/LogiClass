@@ -18,19 +18,7 @@ function main(){
     cat3 = createCategory("three", ["cookie", "cake", "pie"], "noun");
     puzz = initPuzzle("hi", [cat0, cat1, cat2, cat3], "", sol);
 
-/*    for(firstCat=0; firstCat<4; firstCat++){
-	for(firstOpt=0; firstOpt<3; firstOpt++){
-	    for(secondCat=0; secondCat<4; secondCat++){
-		for(secondOpt=0; secondOpt<3; secondOpt++){
-		    document.write("[" + firstCat + ", " + firstOpt + 
-				   "] is related to [" + secondCat + ", " + 
-				   secondOpt + "]: " + 
-			isRelated([firstCat,firstOpt],[secondCat,secondOpt],puzz) +
-				   "</br>");
-		}
-	    }
-	}
-    }*/
+    document.write(generatePositiveDirectClue([0,2], 2, puzz));
 }
 
 main();

@@ -4,7 +4,7 @@
  * @param numOptions = number of options in each category
  * This may be inefficient.  A graph could be better.
 */ 
-function initGrid_whole(numCategories, numOptions){
+function initGrid_DEPRECATED(numCategories, numOptions){
     
     //check that arguments are not null
     if(areReqdArgsNull(numCategories, numOptions)){
@@ -68,7 +68,7 @@ function initGrid(numCategories, numOptions){
 
 /*
  * @param name = string
- * @param optionsList = array of options - contents should reflect type
+ * @param optionsList = array of options (strings or numbers) - contents should reflect |type|
  * @param type = string representing category type: 
          string            
    	     noun
@@ -97,7 +97,14 @@ function createCategory(name, optionsList, type){
     var category = {
 	"name": name,
 	"options": optionsList,
-	"type": type
+	"type": type,
+
+	getNumOptions: function(){
+	    return optionsList.length;
+	},
+	getOption: function(index){
+	    return optionsList[index];
+	}
     };
     return category;
 }
@@ -107,7 +114,7 @@ function createCategory(name, optionsList, type){
  * return 2D array
  * ith entry in the array is the list of options for category i
  */
-function getAllOptions(categories){
+function getAllOptions_DEPRECATED(categories){
     var i;
     var optionList;
     //check that argument is not null
@@ -131,7 +138,7 @@ function getAllOptions(categories){
  *    2. Grid representing relationships between the options 
  * @param categories = number of categories (integer)
  */
-function initRelationships(categories){
+function initRelationships_DEPRECATED(categories){
     //check that argument is not null
     if(areReqdArgsNull(categories)){
 	return;
@@ -175,7 +182,17 @@ function initPuzzle(name, categories, description, solution){
 	"categories": categories,
 	"solution": solution,
 	"clues": [],
-	"description": description
+	"description": description,
+
+	getNumCategories: function(){
+	    return categories.length;
+	},
+	getNumOptions: function(){
+	    return categories[0].getNumOptions();
+	},
+	getCategory: function(index){
+	    return categories[index];
+	}
     };
     return puzzle;
 }
@@ -204,30 +221,27 @@ function isRelated(option1ids, option2ids, puzzle){
     catid2 = option2ids[0];
     optid1 = option1ids[1];
     optid2 = option2ids[1];
-    numCategories = puzzle.categories.length;
-    numOptions = puzzle.categories[0].options.length;
     grid = puzzle.solution;
     var i, pivot;
 
     //case 1: options are in the samem category --> false
     if(catid1 === catid2)     return false;
     //case 2: catid1 is |numCategories|-1 --> directly compare option1 (rows) and option2 (cols)
-    if(catid1 === numCategories - 1){
-	//DOES THIS WORK???????????
+    if(catid1 === puzzle.getNumCategories() - 1){
 	return grid[optid1][optid2 + catid2 * numOptions];
     }
     //case 3: catid2 is |numCategories|-1 --> switch the options (recurssive call)
-    if(catid2 === numCategories - 1){
+    if(catid2 === puzzle.getNumCategories() - 1){
 	return isRelated(option2ids, option1ids, puzzle);
     }
     //case 4: both option1 and option2 are represented by the columns of the grid
     //     --> find the option in category |numCategories|-1 s.t. it is related to option1 (call this |pivot|)
     //     --> compare |pivot| to option2 (recurssive call)
     
-    for(i=0; i<numOptions; i++){
-	opt1Column = optid1 + catid1 * numOptions;
+    for(i=0; i<puzzle.getNumOptions(); i++){
+	opt1Column = optid1 + catid1 * puzzle.getNumOptions;
 	if(grid[i][opt1Column]){
-	    pivot = [numCategories-1, i];
+	    pivot = [puzzle.getNumCategories()-1, i];
 	    return isRelated(pivot, option2ids, puzzle);
 	}
     }
