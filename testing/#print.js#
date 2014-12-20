@@ -6,6 +6,9 @@ function printGrid(A){
     if(areReqdArgsNull(A)){
         return;
     }
+    for(k=0; k<A.length-1; k++){
+	document.write
+    }
     for(i=0; i<A.length; i++){
         for(j=0; j<A[i].length; j++){
 	    val = A[i][j];
