@@ -109,6 +109,68 @@ function createCategory(name, optionsList, type){
     return category;
 }
 
+function clue(type, object1, object2, diff, compareCategory){
+    if(areReqdArgsNull(type, object1, object2, diff, compareCategory)){
+	return;
+    }
+    if(checkTypes({"args": type, "expectType": "string"},
+		  {"args": object1, "expectType": Array},
+		  {"args": object2, "expectType": Array},
+		  {"args": diff, "expectType": "number"},
+		  {"args": compareCategory, "expectType": "number"})){
+	return;
+    }
+    if(type === "equivalence"){
+	diff = 0;
+	if(object1[0] === object2[0]){
+	    compareCategory = object1[0];
+	}else {
+	    //ERROR INVALID COMPARECATEGORY
+	}
+    }else if(type === "inequivalence"){
+	diff = undefined;
+    }else if(type === "comparison"){
+	if(diff === 0){
+	    //ERROR INVALID DIFF
+	}
+    }else {
+	//ERROR INVALID CLUE TYPE
+    }
+    return {
+	"type": type,
+	"object1": object1,
+	"object2": object2,
+	"diff": diff,
+	"compareCategory": compareCategory,
+	"wordyClue": getClueSentence(this),
+	isEquiv: function(){
+	    return type === "equivalence";
+	},
+	isInequiv: function(){
+	    return type === "inequivalence";
+	},
+	isCompare: function(){
+	    return type === "comparative";
+	}
+    }
+}
+
+doClueSolAgree(clue, solution){
+    if(clue.isEquiv()){
+	//grid[option1][option2] === true
+    }else if(clue.isInequiv()){
+	//grid[option1][option2] === false
+    }else if(clue.isCompare()){
+	//do stuff
+    }else{
+	//ERROR
+    }
+}
+
+function getClueSentence(clue){
+
+}
+
 /*
  * Create the puzzle data structure
  * @param name = string representing name of the puzzle
