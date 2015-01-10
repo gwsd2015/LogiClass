@@ -1,14 +1,6 @@
 /*USED FOR TESTING JS FILES*/
 
-function main(){
-//    A = initGrid(4,4);
-  //  B = [[2,3],[4,5],[6,7],[8,9]];
-    //document.write(A.length + "</br>");
-//    printGrid(A);
-
-  //  cat = createCategory("Name", ["Emma", "Bill", "Bob", "Ashley"], "noun");
-    //printCategory(cat);
-  
+function main(){  
     sol = [[true, false, false, false, true, false, false, true, false],
 	   [false, true, false, true, false, false, false, false, true],
 	   [false, false, true, false, false, true, true, false, false]];
@@ -29,26 +21,15 @@ function main(){
     printCategory(cat3);
     document.write("</br>");
 
-    //document.write((puzz instanceof Object) + "</br>");
-  //  document.write("blah: " + isRelated([0,0],[1,2],puzz));
-    document.write(generatePositiveDirectClue([0,2], 2, puzz) + "</br>");
-    document.write(generatePositiveDirectClue([3,2], 1, puzz) + "</br>");
+//    document.write(generatePositiveDirectClue([0,2], 2, puzz) + "</br>");
+//    document.write(generatePositiveDirectClue([3,2], 1, puzz) + "</br>");
 
-//    document.write(Object.getPrototypeOf(puzz) + "</br>");
-   generateAllClues(puzz);
-/*    for(firstCat=0; firstCat<4; firstCat++){
-	for(firstOpt=0; firstOpt<3; firstOpt++){
-	    for(secondCat=0; secondCat<4; secondCat++){
-		for(secondOpt=0; secondOpt<3; secondOpt++){
-		    document.write("[" + firstCat + ", " + firstOpt +
-				   "] is related to [" + secondCat + ", " +
-				   secondOpt + "]: " +
-				   isRelated([firstCat,firstOpt],[secondCat,secondOpt],puzz) +
-				   "</br>");
-		}
-	    }
-	}
-    }*/
+//   generateAllClues(puzz);
+
+    document.write(getRelatedOpt([0, 1], 0, puzz) + "</br>");
+    document.write(getDiff([0,0], [1,2], 2, puzz) + "</br>");
+
 }
 
 main();
+
