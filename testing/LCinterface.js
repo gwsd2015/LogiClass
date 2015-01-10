@@ -109,6 +109,13 @@ function createCategory(name, optionsList, type){
     return category;
 }
 
+/*
+ * @param type: string describing the type of clue ('equivalence' || 'inequivalence' || 'comparative')
+ * @param object1: array containing ids of object1 (object1[0] = cat id, object1[1] = opt id)
+ * @param object2: array containing ids of object2
+ * @param diff: number representing |object1| - |object2| (0 for equiv, undefined for inequiv, nonzero for compare)
+ * @param compareCategory: id (number) of category used to make comparison (and calculate diff) (undefined for inequiv)
+ */
 function clue(type, object1, object2, diff, compareCategory){
     if(areReqdArgsNull(type, object1, object2, diff, compareCategory)){
 	return;
@@ -129,6 +136,7 @@ function clue(type, object1, object2, diff, compareCategory){
 	}
     }else if(type === "inequivalence"){
 	diff = undefined;
+	compareCategory = undefined;
     }else if(type === "comparison"){
 	if(diff === 0){
 	    //ERROR INVALID DIFF
@@ -155,11 +163,11 @@ function clue(type, object1, object2, diff, compareCategory){
     }
 }
 
-doClueSolAgree(clue, solution){
+function doClueSolAgree(clue, solution){
     if(clue.isEquiv()){
-	//grid[option1][option2] === true
+	return isRelated(clue.object1, clue.object2);
     }else if(clue.isInequiv()){
-	//grid[option1][option2] === false
+	return !isRelated(clue.object1, clue.object2);
     }else if(clue.isCompare()){
 	//do stuff
     }else{
