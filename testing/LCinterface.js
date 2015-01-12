@@ -1,4 +1,3 @@
-
 function doClueSolAgree(clue, puzzle){
     //check for null
 
