@@ -31,5 +31,19 @@ function main(){
 
 }
 
-main();
+//main();
+
+function printer(grid){
+    for(z = 0; z<grid.length; z++){
+	document.write(grid[z] + "</br>");
+    }
+}
+var i=0;
+grid = [[0,0,0,1],[0,0,1,0],[0,1,0,0],[1,0,0,0]];
+printer(grid);
+list = shiftGridTimes(grid, grid.length);
+for(i=0; i<list.length; i++){
+    document.write("shifted </br>");
+    printer(list[i]);
+}
 

@@ -20,13 +20,23 @@ function doClueSolAgree(clue, puzzle){
  * and |option2| using |compareCategory| and a puzzle context
  * @param option1ids: 2-entry array containing ids for |option1|
  * @param option2ids: 2-entry array containing ids for |option2|
+ * @param compareCategory: number representing the id of the 
+ *        category used for comparison
  * @param puzzle: puzzle object
  * @return: |option1| - |option2|
  */
 function getDiff(option1ids, option2ids, compareCategory, puzzle){
     //check for null
-
+    if(areReqdArgsNull(option1ids, option2ids, compareCategory, puzzle)){
+	return;
+    }
     //check arg types
+    if(checkTypes({"arg": option1ids, "expectType": Array},
+		  {"arg": option2ids, "expectType": Array},
+		  {"arg": compareCategory, "expectType": "number"},
+		  {"arg": puzzle, "expectType": Object})){
+	
+    }    
     
     //check that |compareCategory| is a comparable category
 
@@ -133,4 +143,70 @@ function isRelated(option1ids, option2ids, puzzle){
 	    return isRelated(pivot, option2ids, puzzle);
 	}
     }
+}
+
+/**
+ * Generates a list of all possible solutions for 
+ * given numbers of categories and options
+ */
+function getAllSolutions(numCategories, numOptions){
+
+}
+
+/*
+ * Helper function for getAllSolutions
+ * swaps given rows of grid
+ */
+function swapRows(grid, r1, r2){
+    var tmp = [];
+    //check for null
+    //check param types
+    
+    tmp = grid[r1];
+    grid[r1] = grid[r2];
+    grid[r2] = grid[r1];
+    return grid;
+}
+
+/*
+ * Helper function for getAllSolutions
+ * Shifts a square grid a number of times
+ * Returns a list containing the state of the grid after each 
+ * individual shift
+ */
+function shiftGridTimes(grid, times){
+    var i;
+    var list = [];
+    //check for null
+    //check param types  
+
+    for(i=0; i<times; i++){
+	//shift grid and add a copy to the list
+	grid = shiftGridOnce(grid);
+	list[i] = copy(grid);
+    }
+    return list;
+}
+
+/*
+ * Helper function for shiftGridTimes
+ * Shifts a grid one time
+ */
+function shiftGridOnce(grid){
+    var i, row;
+    var save = [];
+    //check for null
+    //check param types
+
+    //save the first column of grid before shift
+    for(i=0; i<grid.length; i++){
+	save[i] = grid[i][0];
+    }
+
+    //shift each row and append saved column
+    for(row=0; row<grid.length; row++){
+	grid[row].shift();
+	grid[row][grid.length-1] = save[row];
+    }
+    return grid;
 }

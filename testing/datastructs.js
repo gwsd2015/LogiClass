@@ -4,6 +4,22 @@
 
 
 /*
+ * This function is used to deep copy ANY array
+ * @param grid = array to be copied
+ * @return = reference to new array
+ */
+function copy(grid){
+    var newGrid = [];
+    for(i=0; i<grid.length; i++){
+	newGrid[i] = [];
+	for(j=0; j<grid[i].length; j++){
+	    newGrid[i][j] = grid[i][j];
+	}
+    }
+    return newGrid;
+}
+
+/*
  * @param name = string
  * @param optionsList = array of options (strings or numbers) - contents should reflect |type|
  * @param type = string representing category type: 
