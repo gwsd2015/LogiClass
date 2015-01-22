@@ -24,26 +24,27 @@ function main(){
 //    document.write(generatePositiveDirectClue([0,2], 2, puzz) + "</br>");
 //    document.write(generatePositiveDirectClue([3,2], 1, puzz) + "</br>");
 
-//   generateAllClues(puzz);
+   generateAllClues(puzz);
 
-    document.write(getRelatedOpt([0, 1], 0, puzz) + "</br>");
-    document.write(getDiff([0,0], [1,2], 2, puzz) + "</br>");
+//    document.write(getRelatedOpt([0, 1], 0, puzz) + "</br>");
+    document.write( "</br>Difference between Leila and green based on position is: " + getDiff([0,0], [1,2], 2, puzz) + "</br>");
+    document.write( "</br>Difference between Martha and Vanessa based on position is: " + getDiff([0,1], [0,2], 2, puzz) + "</br>");
 
 }
 
-//main();
+main();
 
 function printer(grid){
     for(z = 0; z<grid.length; z++){
 	document.write(grid[z] + "</br>");
     }
 }
-var i=0;
+/*var i=0;
 grid = [[0,0,0,1],[0,0,1,0],[0,1,0,0],[1,0,0,0]];
 printer(grid);
 list = shiftGridTimes(grid, grid.length);
 for(i=0; i<list.length; i++){
     document.write("shifted </br>");
     printer(list[i]);
-}
+}*/
 
