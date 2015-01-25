@@ -48,6 +48,10 @@ for(i=0; i<list.length; i++){
     printer(list[i]);
 }
 */
-grid = permuteSquare(3);
-printer(grid);
 
+list = permuteSquare(4);
+//printer(list);
+for(i=0; i<list.length; i++){
+    printer(list[i]);
+    document.write("</br></br>")
+}

@@ -158,7 +158,51 @@ function testPuzzle(n, c, d, s, cr){
     }   
 }
 
+function factorial(n){
+    if(n <= 1){
+	return 1;
+    }else{
+	return n * factorial(n-1);
+    }
+}
+
+function testPermuteSquare(numOptions){
+    var list = permuteSquare(numOptions);
+    var i, j;
+    var valid = true;
+    var totalPossibilities = factorial(numOptions);
+    //check that there are enough possibilities
+    if(list.length < totalPossibilities){
+	console.log("ERROR not enough permutations");
+	valid = false;
+    }else if(list.length > totalPossibilities){
+	console.log("ERROR too many permutations");
+	valid = false;
+    }else{
+	//check for duplicates
+	for(i=0; i<list.length; i++){
+	    for(j=i+1; j<list.length; j++){
+		//check if list[i] is the same grid as list[j]
+		if(list[i] === list[j] && i !== j){
+		    console.log("ERROR duplicate: list items " + i + " and " + j);
+		    valid = false;
+		}
+	    }
+	}
+    }
+    if(valid){
+	console.log("permuteSquare test: PASSED for n=" + numOptions);
+    }else{
+	console.log("permuteSquare test: FAILED for n=" + numOptions);
+    }
+    
+}
+
 testCategory("ctest1", ["o1","o2","o3"], "noun");
 testClue("equivalence", [0,1], [1,0], 0, 2);
 testPuzzle("ptest1", [category("testing", ["a", "b", "c"], "verb")],
 	  "hello", [true, false, false], ["is a"]);
+testPermuteSquare(3);
+testPermuteSquare(4);
+testPermuteSquare(5);
+testPermuteSquare(6);

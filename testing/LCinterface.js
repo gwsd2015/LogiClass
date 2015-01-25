@@ -166,32 +166,42 @@ function permuteSquare(numOptions){
 	grid[i] = [];
 	for(j=0; j<numOptions; j++){
 	    if(j === (numOptions - i - 1)){
-		grid[i][j] = true;
+		grid[i][j] = 1;
 	    }else{
-		grid[i][j] = false;
+		grid[i][j] = 0;
 	    }
 	}
     }
+
+    //add original grid
+    list.push(copy(grid));
     
     //first shift
-    shiftGridTimes(grid, times);
-    //FINISH
+    var x = shiftGridTimes(grid, numOptions-1);
+    list = list.concat(x);
+    list = list.concat(recurssiveSwaps(grid, numOptions));
+
+    return list;
 }
 
-function recurssiveSwaps(grid, x, list){
+function recurssiveSwaps(grid, x){
     var i;
+    var list = [];
     var n = grid.length;
     //check for null
     //check param types
     if(x === 1){
 	for(i=2; i<n; i++){
-	    list += swapRows(grid,x,i);
+	    list.push(copy(swapRows(grid,x,i)));
+	    list = list.concat(shiftGridTimes(grid, grid.length-1));
 	}
+
     }else{
-	list += recurssiveSwaps(grid, x-1, list);
+	list = list.concat(recurssiveSwaps(grid, x-1));
 	for(i=x+1; i<n; i++){
-	    list += swapRows(grid,x,i);
-	    list += recurssiveSwaps(grid, x-1, list);
+	    list.push(copy(swapRows(grid,x,i)));
+	    list = list.concat(shiftGridTimes(grid, grid.length-1));
+	    list = list.concat(recurssiveSwaps(grid, x-1));
 	}
     }
     return list;
@@ -208,7 +218,7 @@ function swapRows(grid, r1, r2){
     
     tmp = grid[r1];
     grid[r1] = grid[r2];
-    grid[r2] = grid[r1];
+    grid[r2] = tmp;
     return grid;
 }
 
