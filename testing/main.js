@@ -32,7 +32,7 @@ function main(){
 
 }
 
-main();
+//main();
 
 function printer(grid){
     for(z = 0; z<grid.length; z++){
@@ -46,5 +46,8 @@ list = shiftGridTimes(grid, grid.length);
 for(i=0; i<list.length; i++){
     document.write("shifted </br>");
     printer(list[i]);
-}*/
+}
+*/
+grid = permuteSquare(3);
+printer(grid);
 

@@ -148,9 +148,53 @@ function isRelated(option1ids, option2ids, puzzle){
 /**
  * Generates a list of all possible solutions for 
  * given numbers of categories and options
+ * (note that this is the brute force solution)
  */
-function getAllSolutions(numCategories, numOptions){
+function getAllSolutions(numCategories,numOpeions){
 
+}
+
+function permuteSquare(numOptions){
+    var list = [];
+    var grid = [];
+    var i,j;
+    //check for null
+    //check param types
+
+    //initialize grid (true on right-to-left diagonal)
+    for(i=0; i<numOptions; i++){
+	grid[i] = [];
+	for(j=0; j<numOptions; j++){
+	    if(j === (numOptions - i - 1)){
+		grid[i][j] = true;
+	    }else{
+		grid[i][j] = false;
+	    }
+	}
+    }
+    
+    //first shift
+    shiftGridTimes(grid, times);
+    //FINISH
+}
+
+function recurssiveSwaps(grid, x, list){
+    var i;
+    var n = grid.length;
+    //check for null
+    //check param types
+    if(x === 1){
+	for(i=2; i<n; i++){
+	    list += swapRows(grid,x,i);
+	}
+    }else{
+	list += recurssiveSwaps(grid, x-1, list);
+	for(i=x+1; i<n; i++){
+	    list += swapRows(grid,x,i);
+	    list += recurssiveSwaps(grid, x-1, list);
+	}
+    }
+    return list;
 }
 
 /*
