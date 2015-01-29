@@ -48,9 +48,10 @@ for(i=0; i<list.length; i++){
     printer(list[i]);
 }
 */
+document.write("hello</br>");
+list = getAllSolutions(5,4);
+//list = getAllSolutions_3(3);
 
-list = permuteSquare(4);
-//printer(list);
 for(i=0; i<list.length; i++){
     printer(list[i]);
     document.write("</br></br>")

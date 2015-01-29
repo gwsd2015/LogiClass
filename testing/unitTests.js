@@ -183,6 +183,7 @@ function testPermuteSquare(numOptions){
 	for(i=0; i<list.length; i++){
 	    for(j=i+1; j<list.length; j++){
 		//check if list[i] is the same grid as list[j]
+		//TODO: pretty sure this only compares memory adresses
 		if(list[i] === list[j] && i !== j){
 		    console.log("ERROR duplicate: list items " + i + " and " + j);
 		    valid = false;

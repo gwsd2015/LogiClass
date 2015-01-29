@@ -150,8 +150,48 @@ function isRelated(option1ids, option2ids, puzzle){
  * given numbers of categories and options
  * (note that this is the brute force solution)
  */
-function getAllSolutions(numCategories,numOpeions){
+function getAllSolutions(numCategories,numOptions){
+    var allSquares = permuteSquare(numOptions);
+    return getAllSolutions_recurssive(numCategories, allSquares, []);
+}
 
+function getAllSolutions_recurssive(c, allSquares, acc){
+    var i;
+    var list = [];
+    var tmp = [];
+    //stop at 2 because there are c-1 boxes
+    if(c === 2){
+	for(i=0; i<allSquares.length; i++){
+	    //DON'T CONCAT
+	    //MUST OVERWRITE LAST THREE COLS NOT JUST APPEND
+//	    tmp = acc.concat(allSquares[i]);
+	    tmp = horizConcat(acc, allSquares[i]);
+	    list.push(tmp);
+	}
+    }else{
+	for(i=0; i<allSquares.length; i++){
+//	    acc = acc.concat(allSquares[i]);
+	    tmp = horizConcat(acc, allSquares[i]);
+	    //????????? SHOULD THIS BE |list.push| ??????????????
+//	    list.push(getAllSolutions_recurssive(c-1, allSquares, tmp));
+	    list = list.concat(getAllSolutions_recurssive(c-1, allSquares, tmp));
+	}
+    }
+
+    return list;
+}
+
+function horizConcat(a1, a2){
+    var tmp = [];
+    if(a1.length === 0)  return a2;
+    if(a2.length === 0) return a1;
+    if(a1.length !== a2.length){
+	return;
+    }
+    for(i=0; i<a1.length; i++){
+	tmp[i] = a1[i].concat(a2[i]);
+    }
+    return tmp;
 }
 
 function permuteSquare(numOptions){
