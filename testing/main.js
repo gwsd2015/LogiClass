@@ -49,10 +49,9 @@ for(i=0; i<list.length; i++){
 }
 */
 document.write("hello</br>");
-list = getAllSolutions(5,4);
-//list = getAllSolutions_3(3);
-
-for(i=0; i<list.length; i++){
+list = getAllSolutions(3,3);
+document.write("done1");
+/*for(i=0; i<list.length; i++){
     printer(list[i]);
     document.write("</br></br>")
-}
+}*/

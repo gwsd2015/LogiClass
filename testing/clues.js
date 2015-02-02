@@ -102,3 +102,22 @@ function generateNegativeDirectClue(option1ids, option2ids, puzzle){
             option2 + " " + category2.name + ".";
     }
 }
+
+function getClueList(puzzle){
+    //get all solutions here, so we only have to do it once
+    var allsols = getAllSolutions = getAllSolutions(puzzle.getNumCats, puzzle.getNumOpts);
+    var clueList = []
+    var done = checkClueList(allsols, clueList, puzzle);
+}
+
+/*
+ * @return: true iff the clueList is correct and unambiguous in puzzle context
+ */
+function checkClueList(allsols, clueList, puzzle){
+    var i;
+    for(i=0; i<allsols.length; i++){
+	if(!doClueSolAgree(allsols[i]){
+
+	}
+    }
+}

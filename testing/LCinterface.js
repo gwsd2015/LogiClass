@@ -148,7 +148,10 @@ function isRelated(option1ids, option2ids, puzzle){
 /**
  * Generates a list of all possible solutions for 
  * given numbers of categories and options
- * (note that this is the brute force solution)
+ * too slow for anything larger than:
+ *     c=3 x o=6 (#possibilities = 518,400)
+ *     c=4 x o=4 (#possibilities = 13,824)
+ *     c=5..8 x o=3 (#possibilities = 7,776..1,679,616)
  */
 function getAllSolutions(numCategories,numOptions){
     var allSquares = permuteSquare(numOptions);
@@ -162,18 +165,12 @@ function getAllSolutions_recurssive(c, allSquares, acc){
     //stop at 2 because there are c-1 boxes
     if(c === 2){
 	for(i=0; i<allSquares.length; i++){
-	    //DON'T CONCAT
-	    //MUST OVERWRITE LAST THREE COLS NOT JUST APPEND
-//	    tmp = acc.concat(allSquares[i]);
 	    tmp = horizConcat(acc, allSquares[i]);
 	    list.push(tmp);
 	}
     }else{
 	for(i=0; i<allSquares.length; i++){
-//	    acc = acc.concat(allSquares[i]);
 	    tmp = horizConcat(acc, allSquares[i]);
-	    //????????? SHOULD THIS BE |list.push| ??????????????
-//	    list.push(getAllSolutions_recurssive(c-1, allSquares, tmp));
 	    list = list.concat(getAllSolutions_recurssive(c-1, allSquares, tmp));
 	}
     }
