@@ -182,9 +182,9 @@ function permuteSquare(numOptions){
 	grid[i] = [];
 	for(j=0; j<numOptions; j++){
 	    if(j === (numOptions - i - 1)){
-		grid[i][j] = 1;
+		grid[i][j] = true;
 	    }else{
-		grid[i][j] = 0;
+		grid[i][j] = false;
 	    }
 	}
     }

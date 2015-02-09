@@ -1,6 +1,6 @@
 /*USED FOR TESTING JS FILES*/
 
-//testClueList();
+testClueList();
 
 function testClueList(){
     catRels = []; //not necessary, for now
@@ -36,10 +36,11 @@ function testClueList(){
     clueList = [clue0, clue1, clue2, clue3, clue4, clue5];
 
     sols = getAllSolutions(puzzle1.getNumCategories(), puzzle1.getNumOptions());
-    for(i=0; i<sols.length; i++){
+/*    for(i=0; i<sols.length; i++){
 	puzz = puzzle("Rent", cats, "", sols[i], catRels);
 	document.write(doClueListSolAgree(clueList, puzz) + "</br>");
-    }
+    }*/
+    document.write(checkClueList(sols, clueList, puzzle1));
     //document.write(doClueListSolAgree(clueList, puzzle1) + "</br>");
 //    document.write(doClueListSolAgree(clueList, puzzle2) + "</br>");
 }

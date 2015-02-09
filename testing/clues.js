@@ -120,7 +120,7 @@ function getClueList(puzzle){
 /*
  * @return: true iff the clueList is correct and unambiguous in puzzle context
  */
-function checkClueList(allsols, clueList, puzzle){
+function checkClueList(allsols, clueList, puzz){
     var i, counter;
 
     //check for null
@@ -128,17 +128,23 @@ function checkClueList(allsols, clueList, puzzle){
     //check arg types
 
     counter = 0;
-    for(i=0; i<allsols; i++){
-	if(!doClueListSolAgree){
+    for(i=0; i<allsols.length; i++){
+	puzz2 = puzzle(puzz.name, puzz.categories, puzz.description, 
+		       allsols[i], puzz.catRelationships);
+	if(!doClueListSolAgree(clueList, puzz2)){
 	    //remove solution from list
-	    allsols.splice(i, 1);
+//	    allsols.splice(i, 1);
+	}else {
+	    counter++;
 	}
     }
 
     //the clue list in unamiguous iff allSols has exactly one element
-    if(allSols.length === 1){
+//    if(allsols.length === 1){
+    if(counter === 1){
 	return true;
-    }else if(allSols.length > 1){
+//    }else if(allsols.length > 1){
+    }else if(counter > 1){
 	return false;
     }else{
 	//ERROR
@@ -148,7 +154,7 @@ function checkClueList(allsols, clueList, puzzle){
 /*
  *
  */
-function doClueListSolAgree(clueList, puzzle){
+function doClueListSolAgree(clueList, puzz){
     var i;
 
     //check for null
@@ -156,7 +162,7 @@ function doClueListSolAgree(clueList, puzzle){
     //check arg types
 
     for(i=0; i<clueList.length; i++){
-	if(!doClueSolAgree(clueList[i], puzzle)){
+	if(!doClueSolAgree(clueList[i], puzz)){
 	    return false;
 	}
     }
