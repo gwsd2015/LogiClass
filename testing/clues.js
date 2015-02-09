@@ -1,4 +1,11 @@
 /*
+ * Generate an English sentence for the given clue
+ */
+function getClueSentence(clue){
+
+}
+
+/*
  * This function will generate all of the possible POSITIVE DIRECT clues (for now...expand later) for a given puzzle
  */
 function generateAllClues(puzzle){
@@ -105,8 +112,8 @@ function generateNegativeDirectClue(option1ids, option2ids, puzzle){
 
 function getClueList(puzzle){
     //get all solutions here, so we only have to do it once
-    var allsols = getAllSolutions = getAllSolutions(puzzle.getNumCats, puzzle.getNumOpts);
-    var clueList = []
+    var allsols = getAllSolutions(puzzle.getNumCats, puzzle.getNumOpts);
+    var clueList = [];
     var done = checkClueList(allsols, clueList, puzzle);
 }
 
@@ -114,10 +121,65 @@ function getClueList(puzzle){
  * @return: true iff the clueList is correct and unambiguous in puzzle context
  */
 function checkClueList(allsols, clueList, puzzle){
-    var i;
-    for(i=0; i<allsols.length; i++){
-	if(!doClueSolAgree(allsols[i]){
+    var i, counter;
 
+    //check for null
+    
+    //check arg types
+
+    counter = 0;
+    for(i=0; i<allsols; i++){
+	if(!doClueListSolAgree){
+	    //remove solution from list
+	    allsols.splice(i, 1);
 	}
+    }
+
+    //the clue list in unamiguous iff allSols has exactly one element
+    if(allSols.length === 1){
+	return true;
+    }else if(allSols.length > 1){
+	return false;
+    }else{
+	//ERROR
+    }
+}
+
+/*
+ *
+ */
+function doClueListSolAgree(clueList, puzzle){
+    var i;
+
+    //check for null
+
+    //check arg types
+
+    for(i=0; i<clueList.length; i++){
+	if(!doClueSolAgree(clueList[i], puzzle)){
+	    return false;
+	}
+    }
+    return true;
+}
+
+/*
+ * Given a clue and a puzzle context, return true iff
+ * the clue does not contradict the puzzle solution
+ */
+function doClueSolAgree(clue, puzzle){
+    //check for null
+
+    //check arg types
+
+    if(clue.isEquiv()){
+	return isRelated(clue.object1, clue.object2, puzzle);
+    }else if(clue.isInequiv()){
+	return !isRelated(clue.object1, clue.object2, puzzle);
+    }else if(clue.isCompare()){
+	return clue.diff === getDiff(clue.object1, clue.object2, 
+				     clue.compareCategory, puzzle);
+    }else{
+	//ERROR
     }
 }

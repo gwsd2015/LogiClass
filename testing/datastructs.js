@@ -85,6 +85,7 @@ function clue(type, object1, object2, diff, compareCategory){
 	    compareCategory = object1[0];
 	}else {
 	    //ERROR INVALID COMPARECATEGORY
+	    //^^^^ does this make sense?
 	}
     }else if(type === "inequivalence"){
 	diff = undefined;

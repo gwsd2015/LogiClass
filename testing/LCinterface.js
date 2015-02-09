@@ -1,20 +1,3 @@
-function doClueSolAgree(clue, puzzle){
-    //check for null
-
-    //check arg types
-
-    if(clue.isEquiv()){
-	return isRelated(clue.object1, clue.object2, puzzle);
-    }else if(clue.isInequiv()){
-	return !isRelated(clue.object1, clue.object2, puzzle);
-    }else if(clue.isCompare()){
-	return clue.diff === getDiff(clue.object1, clue.object2, 
-				     clue.compareCategory, puzzle);
-    }else{
-	//ERROR
-    }
-}
-
 /*
  * calculate the difference between two objects |option1| 
  * and |option2| using |compareCategory| and a puzzle context
@@ -89,10 +72,6 @@ function getRelatedOpt(option1ids, category2id, puzzle){
     }
     //sanity checks
     return [category2id, option2id];
-}
-
-function getClueSentence(clue){
-
 }
 
 /*
