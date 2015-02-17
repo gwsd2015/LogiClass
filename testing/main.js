@@ -1,12 +1,12 @@
 /*USED FOR TESTING JS FILES*/
 
-testClueList();
+//testClueList();
 
 function testClueList(){
     catRels = []; //not necessary, for now
-    cat0 = category("Neighborhoods", ["Angelus Oaks", "Capitola", "Delano", "Gilman"], "noun");
-    cat1 = category("Rents", [750, 950, 1250, 1600], "number");
-    cat2 = category("Square Footage", [1100, 1225, 1350, 1475], "number");
+    cat0 = category("Neighborhoods", ["Angelus Oaks", "Capitola", "Delano", "Gilman"], "noun", false);
+    cat1 = category("Rents", [750, 950, 1250, 1600], "number", true);
+    cat2 = category("Square Footage", [1100, 1225, 1350, 1475], "number", true);
     cats = [cat0, cat1, cat2];
     sol = [[false, true, false, false, true, false, false, false],
 	   [false, false, true, false, false, false, false, true],
@@ -33,8 +33,8 @@ function testClueList(){
     clue4 = clue("comparative", [1,1], [1,0], 250, 2);
     //1225 sq ft == 1600/mo
     clue5 = clue("equivalence", [2,1], [1,3], 0, -1);
-    clueList = [clue0, clue1, clue2, clue3, clue4, clue5];
-
+//    clueList = [clue0, clue1, clue2, clue3, clue4, clue5];
+    clueList = [clue0, clue1, clue2, clue3];
     sols = getAllSolutions(puzzle1.getNumCategories(), puzzle1.getNumOptions());
 /*    for(i=0; i<sols.length; i++){
 	puzz = puzzle("Rent", cats, "", sols[i], catRels);
@@ -44,19 +44,19 @@ function testClueList(){
     //document.write(doClueListSolAgree(clueList, puzzle1) + "</br>");
 //    document.write(doClueListSolAgree(clueList, puzzle2) + "</br>");
 }
-
+main();
 
 function main(){  
     sol = [[true, false, false, false, true, false, false, true, false],
 	   [false, true, false, true, false, false, false, false, true],
 	   [false, false, true, false, false, true, true, false, false]];
-    cat0 = category("person", ["Leila", "Martha", "Vanessa"], "noun");
-    cat1 = category("house", ["blue","red","green"], "adjective");
-    cat2 = category("position", [1,2,3], "sequence");
-    cat3 = category("drink", ["milk", "orange juice", "tea"], "noun");
+    cat0 = category("person", ["Leila", "Martha", "Vanessa"], "noun", false);
+    cat1 = category("house", ["blue","red","green"], "adjective", false);
+    cat2 = category("position", [1,2,3], "sequence", true);
+    cat3 = category("drink", ["milk", "orange juice", "tea"], "noun", false);
     catRelations = [[0,"lives in the","has a house in the","drinks"],
 		    ["is owned by",0,"is in the","is owned by the person who drinks"],
-		    ["is position of the house owned by","is the position of the",0,"is the position of the house owned by the person who drinks"],
+		    ["is the position of the house owned by","is the position of the",0,"is the position of the house owned by the person who drinks"],
 		    ["is drunk by","is drunk by the person who lives in the","is drunk by the person who lives in the house in the",0]];
     puzz = puzzle("Projects", [cat0, cat1, cat2, cat3], "", sol, catRelations);
     printGrid(sol);
@@ -70,7 +70,10 @@ function main(){
 //    document.write(generatePositiveDirectClue([0,2], 2, puzz) + "</br>");
 //    document.write(generatePositiveDirectClue([3,2], 1, puzz) + "</br>");
 
-   generateAllClues(puzz);
+    var list = generateAllClues(puzz);
+    for(i=0; i<list.length; i++){
+	document.write(list[i].toString() + "</br>");
+    }
 
 //    document.write(getRelatedOpt([0, 1], 0, puzz) + "</br>");
     document.write( "</br>Difference between Leila and green based on position is: " + getDiff([0,0], [1,2], 2, puzz) + "</br>");

@@ -1,14 +1,7 @@
 /*
- * Generate an English sentence for the given clue
- */
-function getClueSentence(clue){
-
-}
-
-/*
  * This function will generate all of the possible POSITIVE DIRECT clues (for now...expand later) for a given puzzle
  */
-function generateAllClues(puzzle){
+function generateAllClues_deprecated(puzzle){
     var cat1, cat2, opt1, opt2, optionsIndex;
     var categories = puzzle.categories;
     var allOptions = [];
@@ -115,6 +108,62 @@ function getClueList(puzzle){
     var allsols = getAllSolutions(puzzle.getNumCats, puzzle.getNumOpts);
     var clueList = [];
     var done = checkClueList(allsols, clueList, puzzle);
+}
+
+function generateAllClues(puzzle){
+    var categories = puzzle.categories;
+    var catid0, optid0, catid1, optid1;
+    var catid, i, diff;
+    var list = [];
+    //all combinations in same category
+    for(catid=0; catid<categories.length; catid++){
+	var options = categories[catid].options;
+	for(optid0=0; optid0<options.length; optid0++){
+	    for(optid1=optid0+1; optid1<options.length; optid1++){
+		for(i=0; i<categories.length; i++){
+		    if(categories[i].isComparable() && i !== catid){
+			option0 = [catid, optid0];
+			option1 = [catid, optid1];
+			diff = getDiff(option0, option1, i, puzzle);
+			list.push(clue("comparison", option0, option1, diff, i));
+			//document.write("Compare (" + catid + "," + optid0 + ") and (" + catid + "," + optid1 + ") on " + i + "</br>");
+		    }
+		}
+	    }
+	}
+    }
+    
+    //loop through all remianing combinations of options in puzzle
+    for(catid0 = 0; catid0 < categories.length; catid0++){
+	var options0 = categories[catid0].options;
+	for(catid1 = catid0+1; catid1 < categories.length; catid1++){
+	    var options1 = categories[catid1].options;
+	    for(optid0 = 0; optid0 < options0.length; optid0++){
+		for(optid1 = 0; optid1 < options1.length; optid1++){
+		    //if the two items are related, generate an equivalence clue
+		    if(isRelated([catid0,optid0],[catid1,optid1],puzzle)){
+			list.push(clue("equivalence", option0, option1));
+/*			document.write("Equiv (" + catid0 + "," + optid0 + 
+				       ") and (" + catid1 + "," + optid1 + ")</br>");*/
+		    }else{ //otherwise, generate BOTH an equivalence clues and all comparison clues
+			list.push(clue("inequivalence", option0, option1));
+/*			document.write("Inequiv (" + catid0 + "," + optid0 + 
+				       ") and (" + catid1 + "," + optid1 + ")</br>");*/
+			//generate all potential comparison clues (for all comparable categories)
+			for(i=0; i<categories.length; i++){
+			    if(categories[i].isComparable()){
+				diff = getDiff(option0, option1, i, puzzle);
+				list.push(clue("comparison", option0, option1, diff, i));
+/*				document.write("Compare (" + catid0 + "," + optid0 + ") and (" + 
+					       catid1 + "," + optid1 + ") on " + i + "</br>");*/
+			    }
+			}
+		    }
+		}
+	    }
+	}
+    }
+    return list;
 }
 
 /*

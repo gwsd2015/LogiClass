@@ -34,29 +34,40 @@ function copy(grid){
 	     day
 	     other
  */
-function category(name, optionsList, type){
+function category(name, optionsList, type, comparable){
 //check that arguments are not null
-    if(areReqdArgsNull(name, optionsList, type)){
+    if(areReqdArgsNull(name, optionsList, type, comparable)){
 	return;
     }
 
     //check argument types
     if(checkTypes({"arg":name, "expectType":"string"},
 		  {"arg":optionsList, "expectType":Array},
-		  {"arg":type, "expectType":"string"})){
+		  {"arg":type, "expectType":"string"},
+		  {"arg":comparable, "expectType": "boolean"})){
 	return;
+    }
+    //sanity check
+    if(type !== "number" && type !== "date" && type !== "month" &&
+       type !== "position" && type !== "day" && type !== "year" &&
+       type !== "sequence"){
+	comparable = false;
     }
 
     return {
 	"name": name,
 	"options": optionsList,
 	"type": type,
+	"comparable": comparable,
 
 	getNumOptions: function(){
 	    return optionsList.length;
 	},
 	getOption: function(index){
 	    return optionsList[index];
+	},
+	isComparable: function(){
+	    return comparable;
 	}
     };
 }
@@ -69,41 +80,43 @@ function category(name, optionsList, type){
  * @param compareCategory: id (number) of category used to make comparison (and calculate diff) (undefined for inequiv)
  */
 function clue(type, object1, object2, diff, compareCategory){
-    if(areReqdArgsNull(type, object1, object2, diff, compareCategory)){
+    //sanity checks
+    if(areReqdArgsNull(type, object1, object2)){
 	return;
     }
     if(checkTypes({"args": type, "expectType": "string"},
 		  {"args": object1, "expectType": Array},
-		  {"args": object2, "expectType": Array},
-		  {"args": diff, "expectType": "number"},
-		  {"args": compareCategory, "expectType": "number"})){
+		  {"args": object2, "expectType": Array})){
 	return;
     }
-    if(type === "equivalence"){
-	diff = 0;
-	if(object1[0] === object2[0]){
-	    compareCategory = object1[0];
-	}else {
-	    //ERROR INVALID COMPARECATEGORY
-	    //^^^^ does this make sense?
+    if(diff !== undefined && checkTypes({"args": diff, "expectType": "number"})){
+	return;
+    }
+    if(compareCategory !== undefined && checkTypes({"args": compareCategory, "expectType": "number"})){
+	return;
+    }
+    if(type !== "equivalence" && type !== "inequivalence" && type !== "comparison"){
+	console.log("ERROR: Invalid clue type given to function clue()");
+	return;
+    }
+    if(type === "comparison"){
+	if(diff === 0){
+	    console.log("ERROR: Invalid diff given to function clue()");
+	    return;
 	}
-    }else if(type === "inequivalence"){
+    }else{
 	diff = undefined;
 	compareCategory = undefined;
-    }else if(type === "comparison"){
-	if(diff === 0){
-	    //ERROR INVALID DIFF
-	}
-    }else {
-	//ERROR INVALID CLUE TYPE
     }
+    var words = type + ": " + object1 + " and " + object2 + 
+	" diff = " + diff + " compareCat = " + compareCategory;
     return {
 	"type": type,
 	"object1": object1,
 	"object2": object2,
 	"diff": diff,
 	"compareCategory": compareCategory,
-//	"wordyClue": getClueSentence(this),
+	"wordyClue": words,
 	isEquiv: function(){
 	    return type === "equivalence";
 	},
@@ -111,11 +124,17 @@ function clue(type, object1, object2, diff, compareCategory){
 	    return type === "inequivalence";
 	},
 	isCompare: function(){
-	    return type === "comparative";
+	    return type === "comparison";
+	},
+	isEqual: function(clue){
+	    return ((object1 === clue.object1 && object2 === clue.object2) || 
+		    (object1 === clue.object2 && object2 === clue.object1));
+	},
+	toString: function(){
+	    return words;
 	}
     }
 }
-
 
 /*
  * Create the puzzle data structure
@@ -160,3 +179,4 @@ function puzzle(name, categories, description, solution, catRelationships){
 	}
     };
 }
+
