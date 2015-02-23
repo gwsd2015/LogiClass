@@ -1,6 +1,6 @@
 /*USED FOR TESTING JS FILES*/
 
-//testClueList();
+testClueList();
 
 function testClueList(){
     catRels = []; //not necessary, for now
@@ -13,38 +13,13 @@ function testClueList(){
 	   [false, false, false, true, false, true, false, false],
 	   [true, false, false, false, false, false, true, false]];
 
-    sol2 = [[true, false, false, false, true, false, false, false],
-	   [false, true, false, false, false, true, false, false],
-	   [false, false, true, false, false, false, true, false],
-	   [false, false, false, true, false, false, false, true]];
-
     puzzle1 = puzzle("Rent", cats, "", sol, catRels);
-    puzzle2 = puzzle("Rent", cats, "", sol2, catRels);
 
-    //Angelus Oaks - 950/mo = 125 on square footage
-    clue0 = clue("comparative", [0,0], [1,1], 125, 2);
-    //950/mo != Delano
-    clue1 = clue("inequivalence", [1,1], [0,2], 0, -1);
-    //950/mo != Capitola
-    clue2 = clue("inequivalence", [1,1], [0,1], 0, -1);
-    //Delano == 1225 sqft
-    clue3 = clue("equivalence", [0,2], [2,1], 0, -1);
-    //950/mo - 750/mo = 250 on square footage
-    clue4 = clue("comparative", [1,1], [1,0], 250, 2);
-    //1225 sq ft == 1600/mo
-    clue5 = clue("equivalence", [2,1], [1,3], 0, -1);
-//    clueList = [clue0, clue1, clue2, clue3, clue4, clue5];
-    clueList = [clue0, clue1, clue2, clue3];
-    sols = getAllSolutions(puzzle1.getNumCategories(), puzzle1.getNumOptions());
-/*    for(i=0; i<sols.length; i++){
-	puzz = puzzle("Rent", cats, "", sols[i], catRels);
-	document.write(doClueListSolAgree(clueList, puzz) + "</br>");
-    }*/
-    document.write(checkClueList(sols, clueList, puzzle1));
-    //document.write(doClueListSolAgree(clueList, puzzle1) + "</br>");
-//    document.write(doClueListSolAgree(clueList, puzzle2) + "</br>");
+    var clues = getClueList(puzzle1);
+    for(i=0; i<clues.length; i++){
+	document.write(clues[i].toString);
+    }
 }
-main();
 
 function main(){  
     sol = [[true, false, false, false, true, false, false, true, false],

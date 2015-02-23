@@ -1,8 +1,32 @@
 function getClueList(puzzle){
     //get all solutions here, so we only have to do it once
-    var allsols = getAllSolutions(puzzle.getNumCats, puzzle.getNumOpts);
+    var allsols = getAllSolutions(puzzle.getNumCategories(), puzzle.getNumOptions());
     var clueList = [];
-    var done = checkClueList(allsols, clueList, puzzle);
+    var done = false;
+    var MIN_CLUES = 4;
+
+    var allClues = generateAllClues(puzzle);
+    for(i=0; i<MIN_CLUES; i++){
+	//generate random # btwn 0 & allClues.length
+	var rand = Math.floor(Math.random() * allClues.length);
+	//add clue to clueList
+	clueList.push(allClues[rand]);
+	//remove clue from allClues
+	allClues.splice(rand, 1);
+    }
+
+    done = checkClueList(allsols, clueList, puzzle);
+    while(!done){
+	//generate random # btwn 0 & allClues.length
+	var rand = Math.floor(Math.random() * allClues.length);
+	//add clue to clueList
+	clueList.push(allClues[rand]);
+	//remove clue from allClues
+	allClues.splice(rand, 1);
+	done = checkClueList(allsols, clueList, puzzle);
+    }
+
+    return clueList;
 }
 
 function generateAllClues(puzzle){
@@ -21,7 +45,6 @@ function generateAllClues(puzzle){
 			option1 = [catid, optid1];
 			diff = getDiff(option0, option1, i, puzzle);
 			list.push(clue("comparison", option0, option1, diff, i));
-			//document.write("Compare (" + catid + "," + optid0 + ") and (" + catid + "," + optid1 + ") on " + i + "</br>");
 		    }
 		}
 	    }
@@ -38,19 +61,13 @@ function generateAllClues(puzzle){
 		    //if the two items are related, generate an equivalence clue
 		    if(isRelated([catid0,optid0],[catid1,optid1],puzzle)){
 			list.push(clue("equivalence", option0, option1));
-/*			document.write("Equiv (" + catid0 + "," + optid0 + 
-				       ") and (" + catid1 + "," + optid1 + ")</br>");*/
 		    }else{ //otherwise, generate BOTH an equivalence clues and all comparison clues
 			list.push(clue("inequivalence", option0, option1));
-/*			document.write("Inequiv (" + catid0 + "," + optid0 + 
-				       ") and (" + catid1 + "," + optid1 + ")</br>");*/
 			//generate all potential comparison clues (for all comparable categories)
 			for(i=0; i<categories.length; i++){
 			    if(categories[i].isComparable()){
 				diff = getDiff(option0, option1, i, puzzle);
 				list.push(clue("comparison", option0, option1, diff, i));
-/*				document.write("Compare (" + catid0 + "," + optid0 + ") and (" + 
-					       catid1 + "," + optid1 + ") on " + i + "</br>");*/
 			    }
 			}
 		    }
@@ -63,6 +80,7 @@ function generateAllClues(puzzle){
 
 /*
  * @return: true iff the clueList is correct and unambiguous in puzzle context
+ * TODO: try to optimize by removing solutions that don't work
  */
 function checkClueList(allsols, clueList, puzz){
     var i, counter;
@@ -76,18 +94,16 @@ function checkClueList(allsols, clueList, puzz){
 	puzz2 = puzzle(puzz.name, puzz.categories, puzz.description, 
 		       allsols[i], puzz.catRelationships);
 	if(!doClueListSolAgree(clueList, puzz2)){
-	    //remove solution from list
-//	    allsols.splice(i, 1);
 	}else {
+	    //remove allsols[i] from allsols
+	    allsols.splice(i,1);
 	    counter++;
 	}
     }
 
-    //the clue list in unamiguous iff allSols has exactly one element
-//    if(allsols.length === 1){
+    //the clue list in unambiguous iff allSols has exactly one element
     if(counter === 1){
 	return true;
-//    }else if(allsols.length > 1){
     }else if(counter > 1){
 	return false;
     }else{
