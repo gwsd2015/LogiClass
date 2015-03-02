@@ -13,11 +13,11 @@ function testClueList(){
 	   [false, false, false, true, false, true, false, false],
 	   [true, false, false, false, false, false, true, false]];
 
-    puzzle1 = puzzle("Rent", cats, "", sol, catRels);
+    var puzzle1 = puzzle("Rent", cats, "", sol, catRels);
 
     var clues = getClueList(puzzle1);
     for(i=0; i<clues.length; i++){
-	document.write(clues[i].toString);
+	document.write(clues[i].toString() + "</br>");
     }
 }
 

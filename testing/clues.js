@@ -1,4 +1,11 @@
 function getClueList(puzzle){
+    if(areReqdArgsNull(puzzle)){
+	return;
+    }
+    if(checkTypes({"arg": puzzle, "expectType": Object})){
+	return;
+    }
+
     //get all solutions here, so we only have to do it once
     var allsols = getAllSolutions(puzzle.getNumCategories(), puzzle.getNumOptions());
     var clueList = [];
@@ -6,15 +13,14 @@ function getClueList(puzzle){
     var MIN_CLUES = 4;
 
     var allClues = generateAllClues(puzzle);
-    for(i=0; i<MIN_CLUES; i++){
+/*    for(i=0; i<MIN_CLUES; i++){
 	//generate random # btwn 0 & allClues.length
 	var rand = Math.floor(Math.random() * allClues.length);
 	//add clue to clueList
 	clueList.push(allClues[rand]);
 	//remove clue from allClues
 	allClues.splice(rand, 1);
-    }
-
+    }*/
     done = checkClueList(allsols, clueList, puzzle);
     while(!done){
 	//generate random # btwn 0 & allClues.length
@@ -25,11 +31,17 @@ function getClueList(puzzle){
 	allClues.splice(rand, 1);
 	done = checkClueList(allsols, clueList, puzzle);
     }
-
     return clueList;
 }
 
 function generateAllClues(puzzle){
+    if(areReqdArgsNull(puzzle)){
+	return;
+    }
+    if(checkTypes({"arg": puzzle, "expectType": Object})){
+	return;
+    }
+
     var categories = puzzle.categories;
     var catid0, optid0, catid1, optid1;
     var catid, i, diff;
@@ -59,7 +71,9 @@ function generateAllClues(puzzle){
 	    for(optid0 = 0; optid0 < options0.length; optid0++){
 		for(optid1 = 0; optid1 < options1.length; optid1++){
 		    //if the two items are related, generate an equivalence clue
-		    if(isRelated([catid0,optid0],[catid1,optid1],puzzle)){
+		    option0 = [catid0, optid0];
+		    option1 = [catid1, optid1];
+		    if(isRelated(option0,option1,puzzle)){
 			list.push(clue("equivalence", option0, option1));
 		    }else{ //otherwise, generate BOTH an equivalence clues and all comparison clues
 			list.push(clue("inequivalence", option0, option1));
@@ -83,24 +97,39 @@ function generateAllClues(puzzle){
  * TODO: try to optimize by removing solutions that don't work
  */
 function checkClueList(allsols, clueList, puzz){
+    if(areReqdArgsNull(allsols, clueList, puzz)){
+	return;
+    }
+    if(checkTypes({"arg": allsols, "expectType": Array},
+		  {"arg": clueList, "expectType": Array},
+		  {"arg": puzz, "expecType": Object})){
+	return;
+    }
+
     var i, counter;
 
     //check for null
-    
+    if(areReqdArgsNull(allsols, clueList, puzz)){
+	return;
+    }
     //check arg types
+    if(checkTypes({"arg": allsols, "expectType": Array},
+		  {"arg": clueList, "expectType": Array},
+		  {"arg": puzz, "expectType": Object})){
+	return;
+    }
 
     counter = 0;
+    var allsols2 = [];
     for(i=0; i<allsols.length; i++){
 	puzz2 = puzzle(puzz.name, puzz.categories, puzz.description, 
 		       allsols[i], puzz.catRelationships);
-	if(!doClueListSolAgree(clueList, puzz2)){
-	}else {
-	    //remove allsols[i] from allsols
-	    allsols.splice(i,1);
+	if(doClueListSolAgree(clueList, puzz2)){
 	    counter++;
+	    allsols2.push(allsols[i]);
 	}
     }
-
+    allsols = allsols2;
     //the clue list in unambiguous iff allSols has exactly one element
     if(counter === 1){
 	return true;
@@ -108,6 +137,7 @@ function checkClueList(allsols, clueList, puzz){
 	return false;
     }else{
 	//ERROR
+	console.log("ERROR checkClueList() counter is: " + counter);
     }
 }
 
@@ -118,8 +148,14 @@ function doClueListSolAgree(clueList, puzz){
     var i;
 
     //check for null
-
+    if(areReqdArgsNull(clueList, puzz)){
+	return;
+    }
     //check arg types
+    if(checkTypes({"arg": clueList, "expectType": Array},
+		  {"arg": puzz, "expectType": Object})){
+	return;
+    }
 
     for(i=0; i<clueList.length; i++){
 	if(!doClueSolAgree(clueList[i], puzz)){
@@ -135,8 +171,14 @@ function doClueListSolAgree(clueList, puzz){
  */
 function doClueSolAgree(clue, puzzle){
     //check for null
-
+    if(areReqdArgsNull(clue, puzzle)){
+	return;
+    }
     //check arg types
+    if(checkTypes({"arg": clue, "expectType": Object},
+		  {"arg": puzzle, "expectType": Object})){
+	return;
+    }
 
     if(clue.isEquiv()){
 	return isRelated(clue.object1, clue.object2, puzzle);
@@ -147,5 +189,6 @@ function doClueSolAgree(clue, puzzle){
 				     clue.compareCategory, puzzle);
     }else{
 	//ERROR
+	console.log("ERROR: CLUE HAS INVALID TYPE IN doClueSolAgree()");
     }
 }
