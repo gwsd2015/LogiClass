@@ -3,6 +3,24 @@
 testClueList();
 
 function testClueList(){
+    document.write("Instructions for interpreting puzzle:</br>" + 
+		   "In the clue list, each category is referenced by number. " + 
+		   "The numbers are defined below. The options are also referenced by number. " + 
+		   "The options for each category are given in the category's definition. " + 
+		   "Each list of options is numbered starting from 0. " + 
+		   "(You may ignore the |type| and |name|. They are unimportant.</br>" +
+		   "The solution is read as follows: The last category is represented by the rows. " + 
+		   "The 0th category is the first 4 columns. The 1st category is the last 4 columns.</br>" + 
+		   "All of the clues start by giving the type of clue and the 2 options that the clue involves. </br>" +
+		   "<u>For Comparison clues:</u> The |compareCat| gives the index of the category " +
+		   "that will be used for comparison. |diff| is the difference between the item in |compareCat| " +
+		   "that the first option is related to MINUS the item in |compareCat| that the second option" + 
+		   " is related to.<br>" + 
+		   "<u>For Equivalence Clues:</u> the two options are related to each other. " + 
+		   "(You may ignore |diff| and |compareCat|)</br>" + 
+		   "<u>For Inequivalence Clues:</u> the two options are not related to each other. " + 
+		   "(You may ignore |diff| and |compareCat|)</br></br>");
+
     catRels = []; //not necessary, for now
     cat0 = category("Neighborhoods", ["Angelus Oaks", "Capitola", "Delano", "Gilman"], "noun", false);
     cat1 = category("Rents", [750, 950, 1250, 1600], "number", true);
@@ -14,6 +32,18 @@ function testClueList(){
 	   [true, false, false, false, false, false, true, false]];
 
     var puzzle1 = puzzle("Rent", cats, "", sol, catRels);
+
+    document.write("Category Definitions:</br>0th ");
+    printCategory(cat0);
+    document.write("1st ");
+    printCategory(cat1);
+    document.write("2nd ");
+    printCategory(cat2);
+    
+    document.write("</br>Solution:</br>");
+    printGrid(sol);
+
+    document.write("</br></br>Clues:</br>");
 
     var clues = getClueList(puzzle1);
     for(i=0; i<clues.length; i++){

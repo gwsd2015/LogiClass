@@ -26,7 +26,7 @@ function printCategory(cat){
     if(areReqdArgsNull(cat)){
 	return;
     }
-    document.write("Category name = " + cat.name + "; Options: [" +cat.options[0]);
+    document.write("Category: name = " + cat.name + "; Options: [" +cat.options[0]);
     for(i=1; i<cat.options.length; i++){
 	document.write(", " + cat.options[i]);
     }
