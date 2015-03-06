@@ -1,18 +1,20 @@
-function getClueList(puzzle){
-    if(areReqdArgsNull(puzzle)){
+function getClueList(solution, categories){
+    if(areReqdArgsNull(solution, categories)){
 	return;
     }
-    if(checkTypes({"arg": puzzle, "expectType": Object})){
+    if(checkTypes({"arg": solution, "expectType": Object},
+		  {"arg": categories, "expectType": Array})){
 	return;
     }
 
     //get all solutions here, so we only have to do it once
-    var allsols = getAllSolutions(puzzle.getNumCategories(), puzzle.getNumOptions());
+    var allsols = getAllSolutions(categories.length, categories[0].options.length);
     var clueList = [];
     var done = false;
     var MIN_CLUES = 4;
 
-    var allClues = generateAllClues(puzzle);
+    var allClues = generateAllClues(solution, categories);
+    //potential for optimization? :
 /*    for(i=0; i<MIN_CLUES; i++){
 	//generate random # btwn 0 & allClues.length
 	var rand = Math.floor(Math.random() * allClues.length);
@@ -21,7 +23,7 @@ function getClueList(puzzle){
 	//remove clue from allClues
 	allClues.splice(rand, 1);
     }*/
-    done = checkClueList(allsols, clueList, puzzle);
+    done = checkClueList(allsols, clueList, categories);
     while(!done){
 	//generate random # btwn 0 & allClues.length
 	var rand = Math.floor(Math.random() * allClues.length);
@@ -29,20 +31,20 @@ function getClueList(puzzle){
 	clueList.push(allClues[rand]);
 	//remove clue from allClues
 	allClues.splice(rand, 1);
-	done = checkClueList(allsols, clueList, puzzle);
+	done = checkClueList(allsols, clueList, categories);
     }
     return clueList;
 }
 
-function generateAllClues(puzzle){
-    if(areReqdArgsNull(puzzle)){
+function generateAllClues(solution, categories){
+    if(areReqdArgsNull(solution, categories)){
 	return;
     }
-    if(checkTypes({"arg": puzzle, "expectType": Object})){
+    if(checkTypes({"arg": solution, "expectType": Array},
+		 {"arg": categories, "expectType": Array})){
 	return;
     }
 
-    var categories = puzzle.categories;
     var catid0, optid0, catid1, optid1;
     var catid, i, diff;
     var list = [];
@@ -55,7 +57,7 @@ function generateAllClues(puzzle){
 		    if(categories[i].isComparable() && i !== catid){
 			option0 = [catid, optid0];
 			option1 = [catid, optid1];
-			diff = getDiff(option0, option1, i, puzzle);
+			diff = getDiff(option0, option1, i, solution, categories);
 			list.push(clue("comparison", option0, option1, diff, i));
 		    }
 		}
@@ -73,14 +75,15 @@ function generateAllClues(puzzle){
 		    //if the two items are related, generate an equivalence clue
 		    option0 = [catid0, optid0];
 		    option1 = [catid1, optid1];
-		    if(isRelated(option0,option1,puzzle)){
+		    if(isRelated(option0, option1, solution, 
+				 categories.length, categories[0].options.length)){
 			list.push(clue("equivalence", option0, option1));
 		    }else{ //otherwise, generate BOTH an equivalence clues and all comparison clues
 			list.push(clue("inequivalence", option0, option1));
 			//generate all potential comparison clues (for all comparable categories)
 			for(i=0; i<categories.length; i++){
 			    if(categories[i].isComparable()){
-				diff = getDiff(option0, option1, i, puzzle);
+				diff = getDiff(option0, option1, i, solution, categories);
 				list.push(clue("comparison", option0, option1, diff, i));
 			    }
 			}
@@ -96,35 +99,21 @@ function generateAllClues(puzzle){
  * @return: true iff the clueList is correct and unambiguous in puzzle context
  * TODO: try to optimize by removing solutions that don't work
  */
-function checkClueList(allsols, clueList, puzz){
-    if(areReqdArgsNull(allsols, clueList, puzz)){
-	return;
-    }
-    if(checkTypes({"arg": allsols, "expectType": Array},
-		  {"arg": clueList, "expectType": Array},
-		  {"arg": puzz, "expecType": Object})){
-	return;
-    }
-
-    var i, counter;
-
+function checkClueList(allsols, clueList, categories){
     //check for null
-    if(areReqdArgsNull(allsols, clueList, puzz)){
+    if(areReqdArgsNull(allsols, clueList, categories)){
 	return;
     }
     //check arg types
     if(checkTypes({"arg": allsols, "expectType": Array},
 		  {"arg": clueList, "expectType": Array},
-		  {"arg": puzz, "expectType": Object})){
+		  {"arg": categories, "expectType": Array})){
 	return;
     }
 
-    counter = 0;
-    var allsols2 = [];
+    var i, counter = 0, allsols2 = [];
     for(i=0; i<allsols.length; i++){
-	puzz2 = puzzle(puzz.name, puzz.categories, puzz.description, 
-		       allsols[i], puzz.catRelationships);
-	if(doClueListSolAgree(clueList, puzz2)){
+	if(doClueListSolAgree(clueList, allsols[i], categories)){
 	    counter++;
 	    allsols2.push(allsols[i]);
 	}
@@ -144,21 +133,22 @@ function checkClueList(allsols, clueList, puzz){
 /*
  *
  */
-function doClueListSolAgree(clueList, puzz){
+function doClueListSolAgree(clueList, solution, categories){
     var i;
 
     //check for null
-    if(areReqdArgsNull(clueList, puzz)){
+    if(areReqdArgsNull(clueList, solution, categories)){
 	return;
     }
     //check arg types
     if(checkTypes({"arg": clueList, "expectType": Array},
-		  {"arg": puzz, "expectType": Object})){
+		  {"arg": solution, "expectType": Array},
+		  {"arg": categories, "expectType": Array})){
 	return;
     }
 
     for(i=0; i<clueList.length; i++){
-	if(!doClueSolAgree(clueList[i], puzz)){
+	if(!doClueSolAgree(clueList[i], solution, categories)){
 	    return false;
 	}
     }
@@ -169,24 +159,27 @@ function doClueListSolAgree(clueList, puzz){
  * Given a clue and a puzzle context, return true iff
  * the clue does not contradict the puzzle solution
  */
-function doClueSolAgree(clue, puzzle){
+function doClueSolAgree(clue, solution, categories){
     //check for null
-    if(areReqdArgsNull(clue, puzzle)){
+    if(areReqdArgsNull(clue, solution, categories)){
 	return;
     }
     //check arg types
     if(checkTypes({"arg": clue, "expectType": Object},
-		  {"arg": puzzle, "expectType": Object})){
+		  {"arg": solution, "expectType": Array},
+		  {"arg": categories, "expectType": Array})){
 	return;
     }
 
     if(clue.isEquiv()){
-	return isRelated(clue.object1, clue.object2, puzzle);
+	return isRelated(clue.object1, clue.object2, solution, 
+			 categories.length, categories[0].options.length);
     }else if(clue.isInequiv()){
-	return !isRelated(clue.object1, clue.object2, puzzle);
+	return !isRelated(clue.object1, clue.object2, solution, 
+			  categories.length, categories[0].options.length);
     }else if(clue.isCompare()){
 	return clue.diff === getDiff(clue.object1, clue.object2, 
-				     clue.compareCategory, puzzle);
+				     clue.compareCategory, solution, categories);
     }else{
 	//ERROR
 	console.log("ERROR: CLUE HAS INVALID TYPE IN doClueSolAgree()");

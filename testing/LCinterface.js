@@ -8,26 +8,29 @@
  * @param puzzle: puzzle object
  * @return: |option1| - |option2|
  */
-function getDiff(option1ids, option2ids, compareCategory, puzzle){
+function getDiff(option1ids, option2ids, compareCategory, solution, categories){
     //check for null
-    if(areReqdArgsNull(option1ids, option2ids, compareCategory, puzzle)){
+
+    if(areReqdArgsNull(option1ids, option2ids, compareCategory, 
+		       solution, categories)){
 	return;
     }
     //check arg types
     if(checkTypes({"arg": option1ids, "expectType": Array},
 		  {"arg": option2ids, "expectType": Array},
 		  {"arg": compareCategory, "expectType": "number"},
-		  {"arg": puzzle, "expectType": Object})){
+		  {"arg": solution, "expectType": Array},
+		  {"arg": categories, "expectType": Array})){
 	
     }    
     
     //check that |compareCategory| is a comparable category
 
-    var solution = puzzle.solution;
-    var relatedOption1ids = getRelatedOpt(option1ids, compareCategory, puzzle);
-    var relatedOption2ids = getRelatedOpt(option2ids, compareCategory, puzzle);
-    var relatedOption1 = puzzle.getCategory(relatedOption1ids[0]).getOption(relatedOption1ids[1]);
-    var relatedOption2 = puzzle.getCategory(relatedOption2ids[0]).getOption(relatedOption2ids[1]);
+    var relatedOption1ids = getRelatedOpt(option1ids, compareCategory, solution, categories);
+    var relatedOption2ids = getRelatedOpt(option2ids, compareCategory, solution, categories);
+    var relatedOption1 = categories[relatedOption1ids[0]].getOption(relatedOption1ids[1]);
+    var relatedOption2 = categories[relatedOption2ids[0]].getOption(relatedOption2ids[1]);
+
     if((typeof relatedOption1 !== "number") || (typeof relatedOption2 !== "number")){
 	//ERROR
 	console.log("ERROR getDiff: options provided are not numbers");
@@ -45,19 +48,23 @@ function getDiff(option1ids, option2ids, compareCategory, puzzle){
  * @param puzzle: puzzle object 
  * @return: Array of ids representing |option2|
  */
-function getRelatedOpt(option1ids, category2id, puzzle){
+function getRelatedOpt(option1ids, category2id, solution, categories){
     var option2id, option1;
-    var category2 = puzzle.getCategory(category2id);
+
     //check for null
-    if(areReqdArgsNull(option1ids, category2id, puzzle)){
+    if(areReqdArgsNull(option1ids, category2id, solution, categories)){
 	return;
     }
     //sanity type checks
     if(checkTypes({"arg": option1ids, "expectType": Array},
 		  {"arg": category2id, "expectType": "number"},
-		  {"arg": puzzle, "expectType": Object})){
+		  {"arg": solution, "expectType": Array}, 
+		  {"arg": categories, "expectType": Array})){
 	return;
     }
+    //    var category2 = puzzle.getCategory(category2id);
+    var category2 = categories[category2id];
+
     //case 1: |option1| belongs to |category2|
     if(option1ids[0] === category2id){
 	return option1ids;
@@ -66,7 +73,10 @@ function getRelatedOpt(option1ids, category2id, puzzle){
     //case 2: |option1| does not belong to |category2|
     //loop through options in category2 until |curOption| is related to option1
     for(option2id=0; option2id<category2.getNumOptions(); option2id++){
-	if(isRelated([category2id, option2id], option1ids, puzzle)){
+	var numCategories = categories.length;
+	var numOptions = categories[0].options.length;
+	if(isRelated([category2id, option2id], option1ids, 
+		     solution, numCategories, numOptions)){
 	    break;
 	}
     }
@@ -81,7 +91,7 @@ function getRelatedOpt(option1ids, category2id, puzzle){
  * @param puzzle = puzzle object
  * category with id=|numCategories-1| is represented by the rows of the puzzle grid
  */
-function isRelated(option1ids, option2ids, puzzle){
+function isRelated_deprecated(option1ids, option2ids, puzzle){
     //check for null
     if(areReqdArgsNull(option1ids, option2ids, puzzle)){
 	return;
@@ -110,7 +120,8 @@ function isRelated(option1ids, option2ids, puzzle){
     }
     //case 3: catid2 is |numCategories|-1 --> switch the options (recurssive call)
     if(catid2 === puzzle.getNumCategories() - 1){
-	return isRelated(option2ids, option1ids, puzzle);
+	return isR
+elated(option2ids, option1ids, puzzle);
     }
     //case 4: both option1 and option2 are represented by the columns of the grid
     //     --> find the option in category |numCategories|-1 s.t. it is related to option1 (call this |pivot|)
@@ -123,6 +134,72 @@ function isRelated(option1ids, option2ids, puzzle){
 	}
     }
 }
+
+
+
+
+
+
+
+/*
+ * Given 2 options, return true iff they are related in the context of |puzzle|
+ * @param option1ids = array representing category id (option1ids[0]) and option id(option1ids[1])
+ * @param option2ids = array representing category id (option2ids[0]) and option id(option2ids[1])
+ * @param grid = solution to a puzzle
+ * @param numCategories = number of categories in the puzzle
+ * @param numOptions = number of options in puzzle
+ * category with id=|numCategories-1| is represented by the rows of the puzzle grid
+ */
+function isRelated(option1ids, option2ids, grid, numCategories, numOptions){
+    //check for null
+    if(areReqdArgsNull(option1ids, option2ids, grid, numCategories, numOptions)){
+	return;
+    }
+    //check types
+    if(checkTypes({"arg": option1ids, "expectType": Array},
+		  {"arg": option2ids, "expectType": Array},
+		  {"arg": grid, "expectType": Array}, 
+		  {"arg": numCategories, "expectType": "number"}, 
+		  {"arg": numOptions, "expectType": "number"})){
+	return;
+    }
+    //check option ids are valid in |puzzle| context
+    //ERROR CONDITION: option1ids===option2ids --> true BUT redundant
+    catid1 = option1ids[0];
+    catid2 = option2ids[0];
+    optid1 = option1ids[1];
+    optid2 = option2ids[1];
+    var i, pivot;
+    //case 1: options are in the same category --> false
+    if(catid1 === catid2)     return false;
+    //case 2: catid1 is |numCategories|-1 --> directly compare option1 (rows) and option2 (cols) (recurssive call)
+    if(catid1 === numCategories - 1){
+	if(grid[optid1] === undefined) document.write("UNDEFINED: optid1 " + optid1);
+	return grid[optid1][optid2 + catid2 * numOptions];
+    }
+    //case 3: catid2 is |numCategories|-1 --> switch the options (recurssive call)
+    if(catid2 === numCategories - 1){
+	return isRelated(option2ids, option1ids, grid, numCategories, numOptions);
+    }
+    //case 4: both option1 and option2 are represented by the columns of the grid
+    //     --> find the option in category |numCategories|-1 s.t. it is related to option1 (call this |pivot|)
+    //     --> compare |pivot| to option2 (recurssive call)
+    for(i=0; i<numOptions; i++){
+	opt1Column = optid1 + catid1 * numOptions;
+	if(grid[i][opt1Column]){
+	    pivot = [numCategories-1, i];
+	    return isRelated(pivot, option2ids, grid, numCategories, numOptions);
+	}
+    }
+}
+
+
+
+
+
+
+
+
 
 /**
  * Generates a list of all possible solutions for 

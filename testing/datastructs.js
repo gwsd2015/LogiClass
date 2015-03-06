@@ -110,6 +110,7 @@ function clue(type, object1, object2, diff, compareCategory){
     }
     var words = type + ": " + object1 + " and " + object2 + 
 	" diff = " + diff + " compareCat = " + compareCategory;
+
     return {
 	"type": type,
 	"object1": object1,
@@ -135,6 +136,7 @@ function clue(type, object1, object2, diff, compareCategory){
 	}
     }
 }
+
 
 /*
  * Create the puzzle data structure

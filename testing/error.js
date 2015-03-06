@@ -39,7 +39,7 @@ function areReqdArgsNull(){
 	" Argument numbers: ";
 
     for(i=0; i<arguments.length; i++){
-	if(arguments[i] === null){
+	if(arguments[i] === null || arguments[i] === undefined){
 	    errorMsg = errorMsg + i + "  ";
 	    ret = true;
 	}

@@ -45,7 +45,7 @@ function testClueList(){
 
     document.write("</br></br>Clues:</br>");
 
-    var clues = getClueList(puzzle1);
+    var clues = getClueList(puzzle1.solution, puzzle1.categories);
     for(i=0; i<clues.length; i++){
 	document.write(clues[i].toString() + "</br>");
     }
