@@ -21,7 +21,7 @@ function testClueList(){
 		   "<u>For Inequivalence Clues:</u> the two options are not related to each other. " + 
 		   "(You may ignore |diff| and |compareCat|)</br></br>");
 
-    catRels = []; //not necessary, for now
+    catRels = [];
     cat0 = category("Neighborhoods", ["Angelus Oaks", "Capitola", "Delano", "Gilman"], "noun", false);
     cat1 = category("Rents", [750, 950, 1250, 1600], "number", true);
     cat2 = category("Square Footage", [1100, 1225, 1350, 1475], "number", true);
@@ -45,9 +45,10 @@ function testClueList(){
 
     document.write("</br></br>Clues:</br>");
 
-    var clues = getClueList(puzzle1.solution, puzzle1.categories);
+   // var clues = getClueList(puzzle1.solution, puzzle1.categories);
+    var clues = puzzle1.clues;
     for(i=0; i<clues.length; i++){
-	document.write(clues[i].toString() + "</br>");
+	document.write(clues[i].wordyClue + "</br>");
     }
 }
 

@@ -108,8 +108,6 @@ function clue(type, object1, object2, diff, compareCategory){
 	diff = undefined;
 	compareCategory = undefined;
     }
-    var words = type + ": " + object1 + " and " + object2 + 
-	" diff = " + diff + " compareCat = " + compareCategory;
 
     return {
 	"type": type,
@@ -117,7 +115,7 @@ function clue(type, object1, object2, diff, compareCategory){
 	"object2": object2,
 	"diff": diff,
 	"compareCategory": compareCategory,
-	"wordyClue": words,
+	"wordyClue": "",
 	isEquiv: function(){
 	    return type === "equivalence";
 	},
@@ -159,11 +157,18 @@ function puzzle(name, categories, description, solution, catRelationships){
 	return;
     }
 
+    var clueList = getClueList(solution, categories);
+    var i;
+    var clueSens = [];
+    for(i=0; i<clueList.length; i++){
+	clueList[i].wordyClue = getWordyClue(clueList[i], categories, catRelationships);
+    }
+
     return {
 	"name": name,
 	"categories": categories,
 	"solution": solution,
-	"clues": [],
+	"clues": clueList,
 	"description": description,
 	"catRelationships": catRelationships,
 
