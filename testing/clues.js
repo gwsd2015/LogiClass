@@ -82,7 +82,9 @@ function generateAllClues(solution, categories){
 			list.push(clue("inequivalence", option0, option1));
 			//generate all potential comparison clues (for all comparable categories)
 			for(i=0; i<categories.length; i++){
-			    if(categories[i].isComparable()){
+			    //elminate comparison clues that compare on same category 
+			    //as one or both options
+			    if(categories[i].isComparable() && i !== catid0 && i !== catid1){
 				diff = getDiff(option0, option1, i, solution, categories);
 				list.push(clue("comparison", option0, option1, diff, i));
 			    }
