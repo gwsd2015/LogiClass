@@ -3,24 +3,6 @@
 testClueList();
 
 function testClueList(){
-    document.write("Instructions for interpreting puzzle:</br>" + 
-		   "In the clue list, each category is referenced by number. " + 
-		   "The numbers are defined below. The options are also referenced by number. " + 
-		   "The options for each category are given in the category's definition. " + 
-		   "Each list of options is numbered starting from 0. " + 
-		   "(You may ignore the |type| and |name|. They are unimportant.</br>" +
-		   "The solution is read as follows: The last category is represented by the rows. " + 
-		   "The 0th category is the first 4 columns. The 1st category is the last 4 columns.</br>" + 
-		   "All of the clues start by giving the type of clue and the 2 options that the clue involves. </br>" +
-		   "<u>For Comparison clues:</u> The |compareCat| gives the index of the category " +
-		   "that will be used for comparison. |diff| is the difference between the item in |compareCat| " +
-		   "that the first option is related to MINUS the item in |compareCat| that the second option" + 
-		   " is related to.<br>" + 
-		   "<u>For Equivalence Clues:</u> the two options are related to each other. " + 
-		   "(You may ignore |diff| and |compareCat|)</br>" + 
-		   "<u>For Inequivalence Clues:</u> the two options are not related to each other. " + 
-		   "(You may ignore |diff| and |compareCat|)</br></br>");
-
     catRels = [[0,"apartments are","apartments are"],["are in",1,"are"],["are in","are",2]];
     cat0 = category("Neighborhood", ["Angelus Oaks", "Capitola", "Delano", "Gilman"], "noun", false);
     cat1 = category("Rent", [750, 950, 1250, 1600], "number", true);
