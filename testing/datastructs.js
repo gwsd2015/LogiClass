@@ -128,9 +128,6 @@ function clue(type, object1, object2, diff, compareCategory){
 	isEqual: function(clue){
 	    return ((object1 === clue.object1 && object2 === clue.object2) || 
 		    (object1 === clue.object2 && object2 === clue.object1));
-	},
-	toString: function(){
-	    return words;
 	}
     }
 }
