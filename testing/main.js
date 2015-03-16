@@ -1,8 +1,15 @@
 /*USED FOR TESTING JS FILES*/
+document.write("<b><u>Test Puzzles (refresh page to get new clue lists)</u></b></br></br>");
+document.write("<i>The solution is read as follows: The last category is represented by the rows. " +
+	       "The 0th category is the first block of columns (the size of this block is the same as " + 
+	       " the number of options). The 1st category is the next block of columns and so on. </i></br></br>");
 
-testClueList();
+testPuzzle1();
+//document.write("</br></br>**********************************************************************</br></br>");
+//testPuzzle2();
 
-function testClueList(){
+function testPuzzle1(){
+    document.write("<b>Puzzle 1:</b></br>");
     catRels = [[0,"apartments are","apartments are"],["are in",1,"are"],["are in","are",2]];
     cat0 = category("Neighborhood", ["Angelus Oaks", "Capitola", "Delano", "Gilman"], "noun", false);
     cat1 = category("Rent", [750, 950, 1250, 1600], "number", true);
@@ -13,13 +20,48 @@ function testClueList(){
 	   [false, false, false, true, false, true, false, false],
 	   [true, false, false, false, false, false, true, false]];
 
-    var puzzle1 = puzzle("Rent", cats, "", sol, catRels);
+    var puzzle1 = puzzle("Rent", cats, sol, catRels);
 
-    document.write("Category Definitions:</br>0th ");
+    document.write("Category Definitions:</br>0th Category ");
     printCategory(cat0);
-    document.write("1st ");
+    document.write("1st Category ");
     printCategory(cat1);
-    document.write("2nd ");
+    document.write("2nd Category ");
+    printCategory(cat2);
+    
+    document.write("</br>Solution:</br>");
+    printGrid(sol);
+
+    document.write("</br></br>Clues:</br>");
+
+   // var clues = getClueList(puzzle1.solution, puzzle1.categories);
+    var clues = puzzle1.clues;
+    for(i=0; i<clues.length; i++){
+	document.write(clues[i].wordyClue + "</br>");
+    }
+}
+
+function testPuzzle2(){
+    document.write("<b>Puzzle 2:</b></br>");
+
+    cat0 = category("arena", ["Martinez", "Pierce", "Thompson", "Vazquez"], "noun", false);
+    cat1 = category("sport", ["baseball", "basketball", "rugby", "soccer"], "noun", false);
+    cat2 = category("town", ["De Witt", "Quasqueton", "Venice", "York"], "noun", false);
+    cat3 = category("capacity", [110, 150, 190, 230], "number", true);
+    cats = [cat0, cat1, cat2, cat3];
+    catRels = [[0,"is a facility for","is in","has a"],[0,0,"is played in","has the arena with the"],
+	       [0,0,0,"has the arena with the"],[0,0,0,0]];
+
+    sol = [[false, true, false, false, false, true, false, false, false, false, true, false],
+	   [false, false, false, true, false, false, false, true, false, true, false, false],
+	   [true, false, false, false, true, false, false, false, false, false, false, true],
+	   [false, false, true, false, false, false, true, false, true, false, false, false]];
+
+    var puzzle1 = puzzle("Rent", cats, sol, catRels);
+
+    document.write("Category Definitions:</br> ");
+    printCategory(cat0);
+    printCategory(cat1);
     printCategory(cat2);
     
     document.write("</br>Solution:</br>");
