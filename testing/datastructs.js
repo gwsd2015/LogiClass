@@ -140,17 +140,20 @@ function clue(type, object1, object2, diff, compareCategory){
  * @param description = string containing description of the puzzle
  * @param solution = 2D array representing solution to the puzzle
  */
-function puzzle(name, categories, description, solution, catRelationships){
+function puzzle(name, categories, solution, catRelationships, description){
     //check arguments are not null
-    if(areReqdArgsNull(name, categories, description, solution, catRelationships)){
+    if(areReqdArgsNull(name, categories, solution, catRelationships)){
 	return;
     }
     //type checking
     if(checkTypes({"args":name,"expectType":"string"},
 		  {"args":categories,"expectType":Array},
-		  {"args":description,"expectType":"string"},
 		  {"args":solution,"expectType":Array},
 		  {"args":catRelationships, "expectType":Array})){
+	return;
+    }
+    if(description !== null && description !== undefined && 
+      checkTypes({"args":description, "expectType":"string"})){
 	return;
     }
 
