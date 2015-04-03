@@ -44,7 +44,21 @@ function getEquivalenceSen(clue, categories, catRelationships){
     var cat2 = categories[clue.object2[0]];
     var opt1Name = cat1.options[clue.object1[1]];
     var opt2Name = cat2.options[clue.object2[1]];
-
+    if(cat1.type === "noun"){
+	if(cat2.type === "noun"){
+	    return opt1Name + " " + 
+		catRelationships[clue.object1[0]][clue.object2[0]] +
+		" " + opt2Name + ".";
+	}
+	return opt1Name + " " + 
+		catRelationships[clue.object1[0]][clue.object2[0]] +
+		" " + opt2Name + " " + cat2.name + ".";
+    }
+    if(cat2.type === "noun"){
+	return "The" + opt1Name + " " + cat1.name + " " + 
+		catRelationships[clue.object1[0]][clue.object2[0]] +
+		" " + opt2Name + ".";
+    }
     return "The " + opt1Name + " " + cat1.name + " " +
 	catRelationships[clue.object1[0]][clue.object2[0]] +
 	" " + opt2Name + " " + cat2.name + ".";

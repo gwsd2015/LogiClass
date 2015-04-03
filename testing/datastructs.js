@@ -153,7 +153,7 @@ function puzzle(name, categories, solution, catRelationships, description){
 	return;
     }
     if(description !== null && description !== undefined && 
-      checkTypes({"args":description, "expectType":"string"})){
+       checkTypes({"args":description, "expectType":"string"})){
 	return;
     }
 
@@ -187,3 +187,93 @@ function puzzle(name, categories, solution, catRelationships, description){
     };
 }
 
+function clueToJSON(clue){
+    var clueJSON = "{type: " + clue.type + 
+	", object1: " + listToJSON(clue.object1) +
+	", object2: " + listToJSON(clue.object2) + 
+	", diff: " + clue.diff + 
+	", compareCategory: " + clue.compareCategory +
+	", wordyClue: " + clue.wordyClue + "}";
+
+    return clueJSON;
+}
+
+function cluesToJSON(clues){
+    var cluesJSON = "[";
+    var i;
+    for(i=0; i < clues.length - 1; i++){
+	cluesJSON += clueToJSON(clues[i]) + ", ";
+    }
+    cluesJSON += clueToJSON(clues[i]) + "]";
+    return cluesJSON;
+}
+
+function listToJSON(list){
+    var listJSON = "[";
+    var i;
+    for(i=0; i < list.length - 1; i++){
+	listJSON += list[i] + ", ";
+    }
+    listJSON += list[i] + "]";
+    return listJSON;
+}
+
+function categoryToJSON(category){
+    var catJSON = "{name: " + category.name + 
+	", options: " +	listToJSON(category.options) + 
+	", type: " + category.type +
+	", comparable: " + category.comparable + "}";
+
+    return catJSON;
+}
+
+function categoriesToJSON(categories){
+    var catJSON = "[";
+    var i;
+    for(i=0; i < categories.length - 1; i++){
+	catJSON += categoryToJSON(categories[i]) + ", ";
+    }
+    catJSON += categoryToJSON(categories[i]) + "]";
+    return catJSON;
+}
+
+function solutionToJSON(solution){
+    var solJSON = "[[";
+    var i, j;
+    for(i=0; i < solution.length - 1; i++){
+	for(j=0; j < solution[i].length - 1; j++){
+	    solJSON += solution[i][j] + ", ";
+	}
+	//DO LAST ENTRY
+	solJSON += solution[i][j] + "], ["
+    }
+    //DO LAST ROW
+    for(j=0; j < solution[i].length - 1; j++){
+	solJSON += solution[i][j] + ", ";
+    }
+    //DO LAST ENTRY
+    solJSON += solution[i][j] + "]]"
+
+    return solJSON;
+}
+
+function puzzleToJSON(puzzle){
+    var name = puzzle.name;
+    var categories = puzzle.categories;
+    var solution = puzzle.solution;
+    var clues = puzzle.clues;
+    var description = puzzle.description;
+
+    var jsonString = "{name: " + puzzle.name + ", ";
+    
+    //add list of categories
+    jsonString += "categories: " + categoriesToJSON(categories) + ", ";
+
+    //add solution
+    jsonString += "solution: " + solutionToJSON(solution) + ", ";
+
+    //add list of clues
+    jsonString += "clues: " + cluesToJSON(clues) + ", ";
+
+    return jsonString + "description: " + description + "}";
+}

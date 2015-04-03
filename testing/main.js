@@ -5,12 +5,12 @@ document.write("<i>The solution is read as follows: The last category is represe
 	       " the number of options). The 1st category is the next block of columns and so on. </i></br></br>");
 
 testPuzzle1();
-//document.write("</br></br>**********************************************************************</br></br>");
-//testPuzzle2();
+document.write("</br></br>**********************************************************************</br></br>");
+testPuzzle2();
 
 function testPuzzle1(){
     document.write("<b>Puzzle 1:</b></br>");
-    catRels = [[0,"apartments are","apartments are"],["are in",1,"are"],["are in","are",2]];
+    catRels = [[0,"apartments are","apartments are"],["apartments are in",1,"are"],["apartments are in","are",2]];
     cat0 = category("Neighborhood", ["Angelus Oaks", "Capitola", "Delano", "Gilman"], "noun", false);
     cat1 = category("Rent", [750, 950, 1250, 1600], "number", true);
     cat2 = category("Square Feet", [1100, 1225, 1350, 1475], "number", true);
@@ -39,6 +39,7 @@ function testPuzzle1(){
     for(i=0; i<clues.length; i++){
 	document.write(clues[i].wordyClue + "</br>");
     }
+    document.write(puzzleToJSON(puzzle1));
 }
 
 function testPuzzle2(){
@@ -59,10 +60,14 @@ function testPuzzle2(){
 
     var puzzle1 = puzzle("Rent", cats, sol, catRels);
 
-    document.write("Category Definitions:</br> ");
+    document.write("Category Definitions:</br>0th Category ");
     printCategory(cat0);
+    document.write("1st Category ");
     printCategory(cat1);
+    document.write("2nd Category ");
     printCategory(cat2);
+    document.write("3rd Category ");
+    printCategory(cat3);
     
     document.write("</br>Solution:</br>");
     printGrid(sol);
