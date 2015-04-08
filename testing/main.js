@@ -39,7 +39,7 @@ function testPuzzle1(){
     for(i=0; i<clues.length; i++){
 	document.write(clues[i].wordyClue + "</br>");
     }
-    document.write(puzzleToJSON(puzzle1));
+ //   document.write(puzzleToJSON(puzzle1));
 }
 
 function testPuzzle2(){
