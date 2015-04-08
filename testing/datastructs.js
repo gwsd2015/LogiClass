@@ -188,12 +188,12 @@ function puzzle(name, categories, solution, catRelationships, description){
 }
 
 function clueToJSON(clue){
-    var clueJSON = "{type: " + clue.type + 
-	", object1: " + listToJSON(clue.object1) +
-	", object2: " + listToJSON(clue.object2) + 
+    var clueJSON = "{type: " + "'" + clue.type + "'" + 
+	", object1: " + numListToJSON(clue.object1) +
+	", object2: " + numListToJSON(clue.object2) + 
 	", diff: " + clue.diff + 
 	", compareCategory: " + clue.compareCategory +
-	", wordyClue: " + clue.wordyClue + "}";
+	", wordyClue: " + "'" + clue.wordyClue + "'" + "}";
 
     return clueJSON;
 }
@@ -208,7 +208,7 @@ function cluesToJSON(clues){
     return cluesJSON;
 }
 
-function listToJSON(list){
+function numListToJSON(list){
     var listJSON = "[";
     var i;
     for(i=0; i < list.length - 1; i++){
@@ -218,10 +218,20 @@ function listToJSON(list){
     return listJSON;
 }
 
+function strListToJSON(list){
+    var listJSON = "[";
+    var i;
+    for(i=0; i < list.length - 1; i++){
+	listJSON += "'" + list[i] + "', ";
+    }
+    listJSON += "'" + list[i] + "']";
+    return listJSON;
+}
+
 function categoryToJSON(category){
-    var catJSON = "{name: " + category.name + 
-	", options: " +	listToJSON(category.options) + 
-	", type: " + category.type +
+    var catJSON = "{name: " + "'" + category.name + "'" + 
+	", options: " +	strListToJSON(category.options) + 
+	", type: " + "'" + category.type + "'" + 
 	", comparable: " + category.comparable + "}";
 
     return catJSON;
@@ -264,7 +274,7 @@ function puzzleToJSON(puzzle){
     var clues = puzzle.clues;
     var description = puzzle.description;
 
-    var jsonString = "{name: " + puzzle.name + ", ";
+    var jsonString = "{name: " + "'" + puzzle.name + "'" + ", ";
     
     //add list of categories
     jsonString += "categories: " + categoriesToJSON(categories) + ", ";
@@ -275,5 +285,5 @@ function puzzleToJSON(puzzle){
     //add list of clues
     jsonString += "clues: " + cluesToJSON(clues) + ", ";
 
-    return jsonString + "description: " + description + "}";
+    return jsonString + "description: " + "'" + description + "'" + "}";
 }
