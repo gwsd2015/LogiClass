@@ -22,6 +22,10 @@ function testPuzzle1(){
 
     var puzzle1 = puzzle("Rent", cats, sol, catRels);
 
+$.post("JSONHandler.php", puzzle1, function(data, status){
+        alert("Data: " + data + "\nStatus: " + status);
+    });
+
     document.write("Category Definitions:</br>0th Category ");
     printCategory(cat0);
     document.write("1st Category ");
