@@ -13,8 +13,6 @@ $conn = mysqli_connect($servername, $username, $password, $dbname)
 
 mysqli_select_db("logiclass", $conn);
 
-$phpData = json_decode($phpData, true);
-
 mysqli_query($conn, "INSERT INTO Puzzles (PuzzleData, Assigned) VALUES ($data, FALSE);")
        or die('Error with sql query. ' . mysqli_error($conn));
 
