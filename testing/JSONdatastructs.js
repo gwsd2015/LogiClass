@@ -5,12 +5,12 @@
 
 function JSONPuzzle(puzzle){
     return {
-	name: puzzle.name,
-	categories: JSONCategories(puzzle.categories),
-	solution: puzzle.solution,
-	clues: JSONClues(puzzle.clues),
-	description: puzzle.description,
-	catRelationships: puzzle.catRelationships
+	"name": puzzle.name,
+	"categories": JSONCategories(puzzle.categories),
+	"solution": puzzle.solution,
+	"clues": JSONClues(puzzle.clues),
+	"description": puzzle.description,
+	"catRelationships": puzzle.catRelationships
     }
 }
 
@@ -25,10 +25,10 @@ function JSONCategories(categories){
 
 function JSONCategory(category){
     return {
-	name: category.name,
-	options: category.options,
-	type: category.type,
-	comparable: category.comparable
+	"name": category.name,
+	"options": category.options,
+	"type": category.type,
+	"comparable": category.comparable
     }
 }
 
@@ -43,11 +43,11 @@ function JSONClues(clues){
 
 function JSONClue(clue){
     return {
-	type: clue.type,
-	object1: clue.object1,
-	object2: clue.object2,
-	diff: clue.diff,
-	compareCategory: clue.compareCategory,
-	wordyClue: clue.wordyClue
+	"type": clue.type,
+	"object1": clue.object1,
+	"object2": clue.object2,
+	"diff": clue.diff,
+	"compareCategory": clue.compareCategory,
+	"wordyClue": clue.wordyClue
     }
 }

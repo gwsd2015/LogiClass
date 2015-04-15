@@ -24,7 +24,7 @@
   <script src="../testing/clues.js"></script>
   <script src="../testing/JSONdatastructs.js"></script>
 <script type="text/javascript">
-var numC, numO, name, categories, catRels, description, puzz;
+var numC, numO, puzzName, categories, catRels, description, puzz;
 var plainStyle = 'background-color: white; border: 1px solid silver; border-top: 0px; padding: 10px;';
 
 var config = {
@@ -212,19 +212,19 @@ function createForm2(){
 
 function createForm3(){
     var i, j;
-    name = document.getElementById('puzzName').value;
+    puzzName = document.getElementById('puzzName').value;
     description = document.getElementById('puzzDesc').value;
     categories = [];
     catRels = [];
     for(i=0; i<numC; i++){
-        var name = document.getElementById('cat'+i+'Name').value;
+        var catName = document.getElementById('cat'+i+'Name').value;
         var options = [];
         for(j=0; j<numO; j++){
             options[j] = document.getElementById('opt'+ i + "." +j+'Name').value;
         }
         var comp;
         document.getElementById('cat'+i+'Comp').checked ? comp=true : comp=false;
-        categories[i] = category(name, options, 
+        categories[i] = category(catName, options, 
                         document.getElementById('cat'+i+'Type').value, comp);
     } 
 
@@ -322,7 +322,7 @@ function getSolution2(){
         }
     }
 
-    puzz = puzzle(name, categories, sol, catRels, description);
+    puzz = puzzle(puzzName, categories, sol, catRels, description);
     var html = "<ol>";
     for(i=0; i<puzz.clues.length; i++){
         html += "<li>" + puzz.clues[i].wordyClue + "</li>";
@@ -332,9 +332,17 @@ function getSolution2(){
 }
 
 function savePuzzle(){
-    var xmlhttp = new XMLHttpRequest();
+    console.log(JSONPuzzle(puzz));
+
+    $.post('savePuzzle.php', JSONPuzzle(puzz), function(data){
+	//show the response
+	$('#response').html(data);
+    });
+
+
+ /*   var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "savePuzzle.php", true);
-    xmlhttp.send(JSON.stringify(JSONPuzzle(puzz)));
+    xmlhttp.send(JSON.stringify(JSONPuzzle(puzz)));*/
 }
 
 </script>
