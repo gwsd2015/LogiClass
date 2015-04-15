@@ -126,6 +126,9 @@ function clue(type, object1, object2, diff, compareCategory){
 	    return type === "comparison";
 	},
 	isEqual: function(clue){
+	    if(areReqdArgsNull(clue)){
+		return;
+	    }
 	    return ((object1 === clue.object1 && object2 === clue.object2) || 
 		    (object1 === clue.object2 && object2 === clue.object1));
 	}

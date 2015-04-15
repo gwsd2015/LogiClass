@@ -22,10 +22,6 @@ function testPuzzle1(){
 
     var puzzle1 = puzzle("Rent", cats, sol, catRels);
 
-$.post("JSONHandler.php", puzzle1, function(data, status){
-        alert("Data: " + data + "\nStatus: " + status);
-    });
-
     document.write("Category Definitions:</br>0th Category ");
     printCategory(cat0);
     document.write("1st Category ");
@@ -38,12 +34,10 @@ $.post("JSONHandler.php", puzzle1, function(data, status){
 
     document.write("</br></br>Clues:</br>");
 
-   // var clues = getClueList(puzzle1.solution, puzzle1.categories);
     var clues = puzzle1.clues;
     for(i=0; i<clues.length; i++){
 	document.write(clues[i].wordyClue + "</br>");
     }
- //   document.write(puzzleToJSON(puzzle1));
 }
 
 function testPuzzle2(){
