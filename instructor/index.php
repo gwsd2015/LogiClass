@@ -39,6 +39,21 @@
             $i = $i +1;
         }
     } 
+
+    //get 'Assigned' value of all puzzles
+    $result = mysqli_query($conn, "SELECT Assigned FROM Puzzles;")
+           or die('Error with sql query. ' . mysqli_error($conn));
+    //store all puzzles in array 
+    $assignArr = array();
+    $i=0;
+
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $assignArr[$i] = $row["Assigned"];
+            $i = $i +1;
+        }
+    } 
 ?>
 
 
@@ -86,8 +101,31 @@ var config = {
         ],
         onClick: function(event){
             w2ui.layout.content('main', w2ui.layoutInner);
-            w2ui.layoutInner.html('main', generateGrid())
-            w2ui.layoutInner.content('right', 'right');
+            var puzzle = this.get(event.recid);
+            w2ui.layoutInner.html('main', generateGrid(puzzle));
+            var i, html = "<ol>";
+            for(i=0; i<puzzle.clues.length; i++){
+                html += "<li>" + puzzle.clues[i].wordyClue + "</li>";
+            }
+            html += "</ol>";
+            w2ui.layoutInner.content('right', html);
+        }
+    },
+
+    assignPuzzles: {
+        name: 'assignPuzzles',
+        show: {
+            header: true,
+            footer: true
+        },
+        style: 'padding: 0px',
+        columns: [
+            { field: 'name', caption: 'Name', size: '33%', sortable: true, searchable: true },
+            { field: 'description', caption: 'Description', size: '33%', sortable: true, searchable: true },
+            { field: 'assigned', caption: 'Assigned?', size: '33%', sortable: false, searchable: false },
+        ],
+        onClick: function(event){
+            
         }
     },
     sidebar: {
@@ -110,7 +148,7 @@ var config = {
                        $('input[type=list]').w2field('list', { items: ['3','4','5'] });
                     }
                     else if ( event.target == "assign" ){
-
+                        w2ui.layout.html('main', w2ui.assignPuzzles);
                     }
                     else if ( event.target == "grade" ){
 
@@ -124,15 +162,23 @@ $(function () {
 	$('#main').w2layout(config.layout);
         $().w2layout(config.layoutInner);
 	$().w2grid(config.allPuzzles);
+        $().w2grid(config.assignPuzzles);
 
         //add records to grid
-        var numRecords = w2ui['allPuzzles'].records.length;
+        var numRecordsAll = w2ui['allPuzzles'].records.length; 
+        var numRecordsAssi = w2ui['assignPuzzles'].records.length;
         var puzzles = <?php print json_encode($arr); ?>;
+        var assigned = <?php print json_encode($assignArr); ?>;
         var i;
         for(i=0; i<puzzles.length; i++){
 	    var entry = JSON.parse(puzzles[i]);
-            entry.recid = numRecords + i + 1;
+            entry.recid = numRecordsAll + i + 1;
             w2ui['allPuzzles'].add(entry);
+            entry.recid = numRecordsAssi + i + 1;
+            if(JSON.parse(assigned[i]) === 1) entry.assigned = 'true';
+            else entry.assigned = 'false';
+            
+            w2ui['assignPuzzles'].add(entry);
         }
 
 	w2ui.layout.content('left', $().w2sidebar(config.sidebar));
