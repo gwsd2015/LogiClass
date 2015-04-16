@@ -13,6 +13,34 @@
     <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.4.2.min.js"></script>
 </head>
 <body>
+<?php
+
+    $servername = "localhost";
+    $username = "logiclass";
+    $password = "logiclasspwd";
+    $dbname = "logiclass";
+    // Create connection
+    $conn = mysqli_connect($servername, $username, $password, $dbname)
+    	    or die('Error connecting to MySQL server.');
+	    
+    mysqli_select_db("logiclass", $conn);
+	    
+    //get all puzzles
+    $result = mysqli_query($conn, "SELECT PuzzleData FROM Puzzles;")
+           or die('Error with sql query. ' . mysqli_error($conn));
+    //store all puzzles in array 
+    $arr = array();
+    $i=0;
+
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $arr[$i] = $row["PuzzleData"];
+            $i = $i +1;
+        }
+    } 
+?>
+
 
 <div id="main" style="width: 100%; height: 1600px;"></div>
 </br>
@@ -47,7 +75,6 @@ var config = {
 
     allPuzzles: {
         name: 'allPuzzles',
-        url: 'data/list.json',
         show: {
             header: true,
             footer: true
@@ -97,6 +124,17 @@ $(function () {
 	$('#main').w2layout(config.layout);
         $().w2layout(config.layoutInner);
 	$().w2grid(config.allPuzzles);
+
+        //add records to grid
+        var numRecords = w2ui['allPuzzles'].records.length;
+        var puzzles = <?php print json_encode($arr); ?>;
+        var i;
+        for(i=0; i<puzzles.length; i++){
+	    var entry = JSON.parse(puzzles[i]);
+            entry.recid = numRecords + i + 1;
+            w2ui['allPuzzles'].add(entry);
+        }
+
 	w2ui.layout.content('left', $().w2sidebar(config.sidebar));
 });
 
@@ -180,8 +218,10 @@ function createForm1(){
 function createForm2(){
     numC = document.getElementById('numCats').value;
     numO = document.getElementById('numOpts').value;
-    var i, j, html;
-    html += "</br>Puzzle Name: <input id='puzzName' type='text'></br>Description: <input id='puzzDesc' type='textarea' rows='4' cols='50'></br>";
+    var i, j;
+    var html = "Puzzle Name: <input id='puzzName' type='text'></br>Description: " + 
+        "<input id='puzzDesc' type='textarea' rows='4' cols='50'></br>";
+
     for(i=0; i<numC; i++){
         html += "<h2>Definition of Category " + i + ":</h2></br>" +
              "Name: <input id='cat" + i + "Name' type='text'></br>" +
@@ -207,6 +247,7 @@ function createForm2(){
 
     }
     html += "<button onclick='createForm3()'>Submit</button>";
+    w2ui.layout.html('main', "");
     w2ui.layout.html('main', html);
 }
 
@@ -327,21 +368,14 @@ function getSolution2(){
     for(i=0; i<puzz.clues.length; i++){
         html += "<li>" + puzz.clues[i].wordyClue + "</li>";
     }
-    html += "</ol></br><button onclick='savePuzzle()'>Accept</button><div id='response'>place holder</div>";
+    html += "</ol></br><button onclick='savePuzzle()'>Accept</button>";
     w2ui.layoutInner.html('right', html);
 }
 
-function savePuzzle(){
-
+function savePuzzle(){ 
     $.post('savePuzzle.php', JSONPuzzle(puzz), function(data){
-	//show the response
-	$('#response').html(data);
+        w2ui.layout.content('main', "");	  
     });
-
-
- /*   var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "savePuzzle.php", true);
-    xmlhttp.send(JSON.stringify(JSONPuzzle(puzz)));*/
 }
 
 </script>

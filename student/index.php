@@ -28,19 +28,19 @@
 	    
 	    $result = mysqli_query($conn, "SELECT PuzzleData FROM Puzzles WHERE Assigned=TRUE;")
 	           or die('Error with sql query. ' . mysqli_error($conn));
+    //store all puzzles in array 
+    $arr = array();
+    $i=0;
 
-//use code below to test that SELECT query worked
-/*    if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-        echo "data: " . $row["PuzzleData"].  "<br>";
-    }
-} else {
-    echo "0 results";
-}*/
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $arr[$i] = $row["PuzzleData"];
+            $i = $i +1;
+        }
+    } 
+
 ?>
-
-
 
 <div id="main" style="width: 100%; height: 1600px;"></div>
 </br>
@@ -53,6 +53,10 @@
   <script src="../testing/JSONdatastructs.js"></script>
 
 <script type="text/javascript">
+/*var stuff = document.getElementById('queryrow0').value;
+console.log(stuff);*/
+
+
 var numC, numO, puzzName, categories, catRels, description, puzz;
 var plainStyle = 'background-color: white; border: 1px solid silver; border-top: 0px; padding: 10px;';
 var config = {
@@ -74,7 +78,6 @@ var config = {
     },
     allPuzzles: {
         name: 'allPuzzles',
-        url: 'data/list.json',
         show: {
             header: true,
             footer: true
@@ -86,8 +89,14 @@ var config = {
         ],
         onClick: function(event){
             w2ui.layout.content('main', w2ui.layoutInner);
-            w2ui.layoutInner.html('main', generateGrid())
-            w2ui.layoutInner.content('right', 'right');
+            var puzzle = this.get(event.recid);
+            w2ui.layoutInner.html('main', generateGrid(puzzle));
+            var i, html = "<ol>";
+            for(i=0; i<puzzle.clues.length; i++){
+                html += "<li>" + puzzle.clues[i].wordyClue + "</li>";
+            }
+            html += "</ol>";
+            w2ui.layoutInner.content('right', html);
         }
     },
     sidebar: {
@@ -115,14 +124,25 @@ $(function () {
 	$('#main').w2layout(config.layout);
         $().w2layout(config.layoutInner);
 	$().w2grid(config.allPuzzles);
+
+        //add records to grid
+        var numRecords = w2ui['allPuzzles'].records.length;
+        var puzzles = <?php print json_encode($arr); ?>;
+        var i;
+        for(i=0; i<puzzles.length; i++){
+	    var entry = JSON.parse(puzzles[i]);
+            entry.recid = numRecords + i + 1;
+            w2ui['allPuzzles'].add(entry);
+        }
+
 	w2ui.layout.content('left', $().w2sidebar(config.sidebar));
 });
 
-function generateGrid(){
-    var numOptions = 4;
-    var numCategories = 4; 
+function generateGrid(puzzle){
+    var numCategories = puzzle.categories.length; 
+    var numOptions = puzzle.categories[0].options.length;
     var nameWidth = 100;
-    var boxWidth = 50;
+    var boxWidth = 80;
     var i=0, j=0, k=0, l=0;
     var html = "<table cellspacing='0' cellpadding='0' border='0'>";
     html += "<tbody>";
@@ -134,7 +154,7 @@ function generateGrid(){
 	//categories
 	for(j=0; j<numOptions; j++){
 	    html += "<td class='box' width='" + boxWidth + "' height='" + nameWidth + 
-			"'>" + i + "</td>";
+			"'>" + puzzle.categories[i].name + "</td>";
 	}
 //	html += "<th class='box' height='" + nameWidth + "colspan'" + numOptions + "'>" + i + "</th>"
 	html += "</tr><tr>";
@@ -142,7 +162,7 @@ function generateGrid(){
 	for(j=0; j<numOptions; j++){
 	    //option
 	    html += "<td class='box' width='" + boxWidth + "' height='" + nameWidth + 
-			"'>" + j + "</td>";
+			"'>" + puzzle.categories[i].options[j] + "</td>";
 	}
 	html += "</tr></tbody></table></td>";
     }
@@ -155,12 +175,13 @@ function generateGrid(){
 	for(j=0; j<numOptions; j++){
 	    //category
 	    html += "<tr><td class='box' width='" + nameWidth + "'height='" + 
-		boxWidth + "'>" + i + "</td>";
+		boxWidth + "'>" + puzzle.categories[i].name + "</td>";
 	    //option
 	    html += "<td class='box' width='" + nameWidth + "'height='" + 
-		boxWidth + "'>" + j + "</td></tr>";
+		boxWidth + "'>" + puzzle.categories[i].options[j] + "</td></tr>";
         }
 	html += "</tbody></table></td>";
+
 	//blocks
 	for(j=0; j<i; j++){
 	    html += "<td><table cellspacing='0' cellpadding='0' border='1'><tbody>";
@@ -168,7 +189,7 @@ function generateGrid(){
 	        html += "<tr>";
 		    for(l=0; l<numOptions; l++){
 			html += "<td class='box' width='" + boxWidth + "' height='" +
-				boxWidth + "'></td>";
+				boxWidth + "'><input type='radio' id='sol" + k + "." + (l + numO*j) + "'></td>";
 		    }
 		html += "</tr>";
 	    }
@@ -227,8 +248,7 @@ function getSolution(){
             html += "<tr>";
 	    for(l=0; l<numO; l++){
 		html += "<td class='box' width='" + boxWidth + "' height='" +
-			boxWidth + "'><input type='radio' id='sol" + k + "." + (l + numO*j) + "'>";// + 
-//                        "<option value=false>False</option><option value=true>True</option></select></td>";
+			boxWidth + "'><input type='radio' id='sol" + k + "." + (l + numO*j) + "'>";
 	    }
 	    html += "</tr>";
 	}

@@ -1,6 +1,6 @@
 <?php 
 
-$data=$_POST;
+$data=json_encode($_POST);
 print_r($data);
 $servername = "localhost";
 $username = "logiclass";
@@ -13,7 +13,6 @@ $conn = mysqli_connect($servername, $username, $password, $dbname)
 
 mysqli_select_db("logiclass", $conn);
 
-mysqli_query($conn, "INSERT INTO Puzzles (PuzzleData, Assigned) VALUES ($data, FALSE);")
-       or die('Error with sql query. ' . mysqli_error($conn));
-
+mysqli_query($conn, "INSERT INTO Puzzles (PuzzleData, Assigned) VALUES ('$data', FALSE);")
+       or die('</br>Error with sql query. ' . mysqli_error($conn));
 ?>
