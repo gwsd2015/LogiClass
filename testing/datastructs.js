@@ -290,3 +290,15 @@ function puzzleToJSON(puzzle){
 
     return jsonString + "description: " + "'" + description + "'" + "}";
 }
+
+function JSONToSolution(solution){
+    var i, j;
+
+    for(i=0; i<solution.length; i++){
+	for(j=0; j<solution[i].length; j++){
+	    if(solution[i][j] === "true") solution[i][j] = true;
+	    else if(solution[i][j] === "false") solution[i][j] = false;
+	}
+    }
+    return solution;
+}
