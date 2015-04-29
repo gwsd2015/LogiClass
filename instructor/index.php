@@ -326,6 +326,11 @@ function getSolution2(){
         }
     }
 
+    for(i=0; i<categories.length; i++){
+        if(categories[i].comparable === "true")  categories[i].type = true;
+        if(categories[i].comparable === "false")  categories[i].type = false;
+    }
+
     puzz = puzzle(puzzName, categories, sol, catRels, description);
     var html = "<ol>";
     for(i=0; i<puzz.clues.length; i++){

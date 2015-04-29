@@ -54,7 +54,7 @@ function generateAllClues(solution, categories){
 	for(optid0=0; optid0<options.length; optid0++){
 	    for(optid1=optid0+1; optid1<options.length; optid1++){
 		for(i=0; i<categories.length; i++){
-		    if(categories[i].isComparable() && i !== catid){
+		    if((categories[i].comparable === true || categories[i].comparable === "true") && i !== catid){
 			option0 = [catid, optid0];
 			option1 = [catid, optid1];
 			diff = getDiff(option0, option1, i, solution, categories);
@@ -84,7 +84,7 @@ function generateAllClues(solution, categories){
 			for(i=0; i<categories.length; i++){
 			    //elminate comparison clues that compare on same category 
 			    //as one or both options
-			    if(categories[i].isComparable() && i !== catid0 && i !== catid1){
+			    if((categories[i].comparable === "true" || categories[i].comparable === true) && i !== catid0 && i !== catid1){
 				diff = getDiff(option0, option1, i, solution, categories);
 				list.push(clue("comparison", option0, option1, diff, i));
 			    }

@@ -34,6 +34,29 @@ function getWordyClue(clue, categories, catRelationships){
     return clueSen;
 }
 
+function generateNounPhrase(isAtStart, isProperNoun, noun, adjective, infNumAdj){
+    var str = "";
+    if(isAtStart && !isProperNoun){
+	str += "The ";
+    }
+    if(!isAtStart && !isProperNoun){
+	str += " the ";
+    }
+    str += adjective;
+    if(infNumAdj && adjective !== ""){
+	if(adjective == 1){
+	    str += "st";
+	}else if(adjective == 2){
+	    str += "nd";
+	}else if(adjective == 3){
+	    str += "rd";
+	}else{
+	    str += "th";
+	}
+    }
+    return str + " " + noun;
+}
+
 
 /**
  * This function generates a setence for equivalence clues
@@ -44,27 +67,39 @@ function getEquivalenceSen(clue, categories, catRelationships){
     var cat2 = categories[clue.object2[0]];
     var opt1Name = cat1.options[clue.object1[1]];
     var opt2Name = cat2.options[clue.object2[1]];
-    if(cat1.type === "noun"){
-	if(cat2.type === "noun"){
-	    return opt1Name + " " + 
-		catRelationships[clue.object1[0]][clue.object2[0]] +
-		" " + opt2Name + ".";
-	}
-	return opt1Name + " " + 
-		catRelationships[clue.object1[0]][clue.object2[0]] +
-		" " + opt2Name + " " + cat2.name + ".";
-    }
-    if(cat2.type === "noun"){
-	return "The" + opt1Name + " " + cat1.name + " " + 
-		catRelationships[clue.object1[0]][clue.object2[0]] +
-		" " + opt2Name + ".";
-    }
-    return "The " + opt1Name + " " + cat1.name + " " +
-	catRelationships[clue.object1[0]][clue.object2[0]] +
-	" " + opt2Name + " " + cat2.name + ".";
+    var str = "";
 
-    /*return  clue.type + ": " + clue.object1 + " and " + clue.object2 +
-	" diff = " + clue.diff + " compareCat = " + clue.compareCategory;*/
+    var nounPhrase1, nounPhrase2;
+    if(cat1.type === "noun"){
+	nounPhrase1 = generateNounPhrase(true, true, opt1Name, "", false);
+    }else if(cat1.type === "adjective"){
+	nounPhrase1 = generateNounPhrase(true, false, cat1.name, opt1Name, false);
+    }else if(cat1.type === "sequence"){
+	nounPhrase1 = generateNounPhrase(true, false, cat1.name, opt1Name, true);
+    }
+
+    if(cat2.type === "noun"){
+	nounPhrase2 = generateNounPhrase(false, true, opt2Name, "", false);
+    }else if(cat2.type === "adjective"){
+	nounPhrase2 = generateNounPhrase(false, false, cat2.name, opt2Name, false);
+    }else if(cat2.type === "sequence"){
+	nounPhrase2 = generateNounPhrase(false, false, cat2.name, opt2Name, true);
+    }
+
+    return nounPhrase1 + " " + catRelationships[clue.object1[0]][clue.object2[0]] +
+	" " + nounPhrase2 + ".";
+}
+
+function negatePhrase(phrase){
+    var sA, verb;
+    if(phrase.indexOf("is") !== -1) {
+	sA = phrase.split("is");
+	verb = "is";
+    }else{
+	return phrase;
+    }
+
+    return sA[0] + " " + verb + " not " + sA[1];
 }
 
 function getInequivalenceSen(clue, categories, catRelationships){
@@ -75,9 +110,28 @@ function getInequivalenceSen(clue, categories, catRelationships){
     var opt1Name = cat1.options[clue.object1[1]];
     var opt2Name = cat2.options[clue.object2[1]];
 
-    return "The " + opt1Name + " " + cat1.name + " " +
-	catRelationships[clue.object1[0]][clue.object2[0]] +
-	" not " + opt2Name + " " + cat2.name + ".";
+    var nounPhrase1, nounPhrase2;
+    if(cat1.type === "noun"){
+	nounPhrase1 = generateNounPhrase(true, true, opt1Name, "", false);
+    }else if(cat1.type === "adjective"){
+	nounPhrase1 = generateNounPhrase(true, false, cat1.name, opt1Name, false);
+    }else if(cat1.type === "sequence"){
+	nounPhrase1 = generateNounPhrase(true, false, cat1.name, opt1Name, true);
+    }
+
+    if(cat2.type === "noun"){
+	nounPhrase2 = generateNounPhrase(false, true, opt2Name, "", false);
+    }else if(cat2.type === "adjective"){
+	nounPhrase2 = generateNounPhrase(false, false, cat2.name, opt2Name, false);
+    }else if(cat2.type === "sequence"){
+	nounPhrase2 = generateNounPhrase(false, false, cat2.name, opt2Name, true);
+    }
+
+    return nounPhrase1 + " " + negatePhrase(catRelationships[clue.object1[0]][clue.object2[0]]) +
+	nounPhrase2 + ".";
+
+/*    return nounPhrase1 + " " + catRelationships[clue.object1[0]][clue.object2[0]] +
+	" not " + nounPhrase2 + ".";*/
 }
 
 function getComparisonSen(clue, categories, catRelationships){
