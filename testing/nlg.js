@@ -72,18 +72,18 @@ function getEquivalenceSen(clue, categories, catRelationships){
     var nounPhrase1, nounPhrase2;
     if(cat1.type === "noun"){
 	nounPhrase1 = generateNounPhrase(true, true, opt1Name, "", false);
-    }else if(cat1.type === "adjective"){
-	nounPhrase1 = generateNounPhrase(true, false, cat1.name, opt1Name, false);
     }else if(cat1.type === "sequence"){
 	nounPhrase1 = generateNounPhrase(true, false, cat1.name, opt1Name, true);
+    }else{
+	nounPhrase1 = generateNounPhrase(true, false, cat1.name, opt1Name, false);
     }
 
     if(cat2.type === "noun"){
 	nounPhrase2 = generateNounPhrase(false, true, opt2Name, "", false);
-    }else if(cat2.type === "adjective"){
-	nounPhrase2 = generateNounPhrase(false, false, cat2.name, opt2Name, false);
     }else if(cat2.type === "sequence"){
 	nounPhrase2 = generateNounPhrase(false, false, cat2.name, opt2Name, true);
+    }else{
+	nounPhrase2 = generateNounPhrase(false, false, cat2.name, opt2Name, false);
     }
 
     return nounPhrase1 + " " + catRelationships[clue.object1[0]][clue.object2[0]] +
@@ -96,7 +96,7 @@ function negatePhrase(phrase){
 	sA = phrase.split("is");
 	verb = "is";
     }else{
-	return phrase;
+	return phrase + " not";
     }
 
     return sA[0] + " " + verb + " not " + sA[1];
@@ -113,18 +113,18 @@ function getInequivalenceSen(clue, categories, catRelationships){
     var nounPhrase1, nounPhrase2;
     if(cat1.type === "noun"){
 	nounPhrase1 = generateNounPhrase(true, true, opt1Name, "", false);
-    }else if(cat1.type === "adjective"){
-	nounPhrase1 = generateNounPhrase(true, false, cat1.name, opt1Name, false);
     }else if(cat1.type === "sequence"){
 	nounPhrase1 = generateNounPhrase(true, false, cat1.name, opt1Name, true);
+    }else{
+	nounPhrase1 = generateNounPhrase(true, false, cat1.name, opt1Name, false);
     }
 
     if(cat2.type === "noun"){
 	nounPhrase2 = generateNounPhrase(false, true, opt2Name, "", false);
-    }else if(cat2.type === "adjective"){
-	nounPhrase2 = generateNounPhrase(false, false, cat2.name, opt2Name, false);
     }else if(cat2.type === "sequence"){
 	nounPhrase2 = generateNounPhrase(false, false, cat2.name, opt2Name, true);
+    }else{
+	nounPhrase2 = generateNounPhrase(false, false, cat2.name, opt2Name, false);
     }
 
     return nounPhrase1 + " " + negatePhrase(catRelationships[clue.object1[0]][clue.object2[0]]) +
@@ -135,7 +135,7 @@ function getInequivalenceSen(clue, categories, catRelationships){
 }
 
 function getComparisonSen(clue, categories, catRelationships){
-  /*  return clue.type + ": " + clue.object1 + " and " + clue.object2 +
+/*    return clue.type + ": " + clue.object1 + " and " + clue.object2 +
 	" diff = " + clue.diff + " compareCat = " + clue.compareCategory;*/
     var cat1 = categories[clue.object1[0]];
     var cat2 = categories[clue.object2[0]];

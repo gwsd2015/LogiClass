@@ -197,7 +197,7 @@ function createForm2(){
                    "<option value='year'>Year</option>" +
                    "<option value='date'>Date</option>" +
                    "<option value='sequence'>Sequence/Position</option>" +
-                   "<option value='other'>Other number</option>" +
+                   "<option value='number'>Other number</option>" +
                    "</select></br>" +
              "Comparable? <select id='cat" + i + "Comp'><option value=false>False</option>" +
                    "<option value=true>True</option></select></br>";
@@ -227,7 +227,8 @@ function createForm3(){
             options[j] = document.getElementById('opt'+ i + "." +j+'Name').value;
         }
         var comp;
-        document.getElementById('cat'+i+'Comp').checked ? comp=true : comp=false;
+//        document.getElementById('cat'+i+'Comp').checked ? comp=true : comp=false;
+        comp = document.getElementById('cat'+i+'Comp').value;
         categories[i] = category(catName, options, 
                         document.getElementById('cat'+i+'Type').value, comp);
     } 

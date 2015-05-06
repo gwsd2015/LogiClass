@@ -31,11 +31,6 @@ function getDiff(option1ids, option2ids, compareCategory, solution, categories){
     var relatedOption1 = categories[relatedOption1ids[0]].getOption(relatedOption1ids[1]);
     var relatedOption2 = categories[relatedOption2ids[0]].getOption(relatedOption2ids[1]);
 
-    if((typeof relatedOption1 !== "number") || (typeof relatedOption2 !== "number")){
-	//ERROR
-	console.log("ERROR getDiff: options provided are not numbers");
-	return;
-    }
     return relatedOption1 - relatedOption2;
 }
 
